@@ -2,7 +2,6 @@ package com.grupo3.allslife_framework.service;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +9,6 @@ import com.grupo3.allslife_framework.dto.CreateUserDTO;
 import com.grupo3.allslife_framework.dto.NotificationDTO;
 import com.grupo3.allslife_framework.dto.UserDTO;
 import com.grupo3.allslife_framework.exception.UserNotFoundException;
-import com.grupo3.allslife_framework.model.AbstractRoutine;
 import com.grupo3.allslife_framework.model.GoalBoard;
 import com.grupo3.allslife_framework.model.User;
 import com.grupo3.allslife_framework.repository.UserRepository;

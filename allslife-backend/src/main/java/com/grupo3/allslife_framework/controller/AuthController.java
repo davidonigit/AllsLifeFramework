@@ -13,7 +13,6 @@ import com.grupo3.allslife_framework.dto.UserDTO;
 import com.grupo3.allslife_framework.model.User;
 import com.grupo3.allslife_framework.repository.UserRepository;
 import com.grupo3.allslife_framework.security.TokenService;
-import com.grupo3.allslife_framework.service.NotificationService;
 
 import lombok.RequiredArgsConstructor;
 

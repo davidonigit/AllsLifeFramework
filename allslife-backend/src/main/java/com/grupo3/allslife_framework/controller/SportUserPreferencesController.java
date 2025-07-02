@@ -6,14 +6,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.grupo3.allslife_framework.dto.SportUserPreferencesDTO;
-import com.grupo3.allslife_framework.model.SportRoutine;
 import com.grupo3.allslife_framework.model.SportUserPreferences;
 import com.grupo3.allslife_framework.service.SportRoutineService;
 
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PathVariable;
 
 
 @Controller

@@ -3,7 +3,6 @@ package com.grupo3.allslife_framework.service;
 import com.grupo3.allslife_framework.dto.NotificationDTO;
 import com.grupo3.allslife_framework.dto.SportRoutineDTO;
 import com.grupo3.allslife_framework.dto.SportUserPreferencesDTO;
-import com.grupo3.allslife_framework.enums.SportExperienceLevel;
 import com.grupo3.allslife_framework.exception.RoutineNotFoundException;
 import com.grupo3.allslife_framework.model.RoutineHistory;
 import com.grupo3.allslife_framework.model.SportRoutine;
