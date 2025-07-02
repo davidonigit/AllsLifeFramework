@@ -31,6 +31,7 @@ public abstract class AbstractRoutineService<
     protected final SecurityUtils securityUtils;
     protected final FachadaLLM fachadaLLM;
     protected final NotificationService notificationService;
+    protected final UserService userService;
 
     // MÉTODOS GENÉRICOS
 

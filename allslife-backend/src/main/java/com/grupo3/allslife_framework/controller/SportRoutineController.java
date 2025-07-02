@@ -27,7 +27,7 @@ public class SportRoutineController {
     
     @GetMapping
     public ResponseEntity<SportRoutine> getMyRoutine() {
-        return ResponseEntity.ok(sportRoutineService.findByCurrentUser());
+        return ResponseEntity.ok(sportRoutineService.getOrCreateSportRoutineForCurrentUser());
     }
 
 

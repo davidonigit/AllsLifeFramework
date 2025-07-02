@@ -2,9 +2,13 @@ package com.grupo3.allslife_framework.service;
 
 import com.grupo3.allslife_framework.dto.NotificationDTO;
 import com.grupo3.allslife_framework.dto.SportRoutineDTO;
+import com.grupo3.allslife_framework.dto.SportUserPreferencesDTO;
+import com.grupo3.allslife_framework.enums.SportExperienceLevel;
 import com.grupo3.allslife_framework.exception.RoutineNotFoundException;
 import com.grupo3.allslife_framework.model.RoutineHistory;
 import com.grupo3.allslife_framework.model.SportRoutine;
+import com.grupo3.allslife_framework.model.SportUserPreferences;
+import com.grupo3.allslife_framework.model.User;
 import com.grupo3.allslife_framework.repository.DailyAvailabilityRepository;
 import com.grupo3.allslife_framework.repository.RoutineHistoryRepository;
 import com.grupo3.allslife_framework.repository.SportRoutineRepository;
@@ -21,13 +25,14 @@ public class SportRoutineService extends AbstractRoutineService<SportRoutine, Sp
     private final RoutineHistoryRepository RoutineHistoryRepository;
 
     // Construtor que injeta as dependências e as passa para a classe pai
-    public SportRoutineService(SportRoutineRepository sportRoutineRepository,
+    public SportRoutineService(SportRoutineRepository routineRepository,
                                DailyAvailabilityRepository dailyAvailabilityRepository,
                                SecurityUtils securityUtils,
                                FachadaLLM fachadaLLM,
                                NotificationService notificationService,
+                               UserService userService,
                                RoutineHistoryRepository RoutineHistoryRepository) {
-        super(sportRoutineRepository, dailyAvailabilityRepository, securityUtils, fachadaLLM, notificationService);
+        super(routineRepository, dailyAvailabilityRepository, securityUtils, fachadaLLM, notificationService, userService);
         this.RoutineHistoryRepository = RoutineHistoryRepository;
     }
 
@@ -90,6 +95,41 @@ public class SportRoutineService extends AbstractRoutineService<SportRoutine, Sp
 
 
     // --- MÉTODOS ESPECÍFICOS DE sportRoutineService ---
+    public SportRoutine getOrCreateSportRoutineForCurrentUser() {
+        User currentUser = userService.getById(securityUtils.getCurrentUserId());
+
+        if (currentUser.getRoutine() != null && currentUser.getRoutine() instanceof SportRoutine) {
+            return (SportRoutine) currentUser.getRoutine();
+        }
+
+        SportRoutine newRoutine = new SportRoutine();
+        newRoutine.setUser(currentUser);
+        currentUser.setRoutine(newRoutine);
+
+        routineRepository.save(newRoutine);
+
+        initializeWeeklyAvailability(newRoutine.getId());
+
+        return newRoutine;
+    }
+
+    public SportUserPreferences getOrCreateSportPreferences() {
+        User currentUser = userService.getById(securityUtils.getCurrentUserId());
+
+        if (currentUser.getPreferences() != null && currentUser.getPreferences() instanceof SportUserPreferences) {
+            return (SportUserPreferences) currentUser.getPreferences();
+        }
+
+        SportUserPreferences prefs = new SportUserPreferences();
+
+        prefs.setUser(currentUser);
+        currentUser.setPreferences(prefs);
+        
+        userService.saveUser(currentUser);
+
+        return (SportUserPreferences)currentUser.getPreferences();
+    }
+
 
     public SportRoutine updateSportRoutine(SportRoutineDTO dto) {
         SportRoutine sportRoutine = findByCurrentUser();
@@ -111,11 +151,25 @@ public class SportRoutineService extends AbstractRoutineService<SportRoutine, Sp
         
         return routineRepository.save(sportRoutine);
     }
+
+    public SportUserPreferences updateSportUserPreferences(SportUserPreferencesDTO dto) {
+        User currentUser = userService.getById(securityUtils.getCurrentUserId());
+        
+        if (currentUser.getPreferences() == null || !(currentUser.getPreferences() instanceof SportUserPreferences)) {
+            throw new IllegalArgumentException("Usuário não possui preferências esportivas definidas.");
+        }
+        
+        SportUserPreferences preferences = (SportUserPreferences) currentUser.getPreferences();
+        preferences.setAge(dto.age());
+        preferences.setExperienceLevel(dto.experienceLevel());
+        
+        userService.saveUser(currentUser);
+        
+        return preferences;
+    }
     
     public List<RoutineHistory> getSportRoutineHistory() {
         Long userId = securityUtils.getCurrentUserId();
-        // ...lógica para buscar histórico
         return RoutineHistoryRepository.findByUserId(userId);
     }
-    
 }

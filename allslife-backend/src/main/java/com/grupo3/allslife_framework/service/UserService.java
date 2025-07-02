@@ -10,8 +10,8 @@ import com.grupo3.allslife_framework.dto.CreateUserDTO;
 import com.grupo3.allslife_framework.dto.NotificationDTO;
 import com.grupo3.allslife_framework.dto.UserDTO;
 import com.grupo3.allslife_framework.exception.UserNotFoundException;
+import com.grupo3.allslife_framework.model.AbstractRoutine;
 import com.grupo3.allslife_framework.model.GoalBoard;
-import com.grupo3.allslife_framework.model.SportRoutine;
 import com.grupo3.allslife_framework.model.User;
 import com.grupo3.allslife_framework.repository.UserRepository;
 import com.grupo3.allslife_framework.security.SecurityUtils;
@@ -22,35 +22,42 @@ import lombok.AllArgsConstructor;
 @Service
 @AllArgsConstructor
 public class UserService {
+// Removida a injeção do SportRoutineService
 
-    @Autowired
-    UserRepository userRepository;
-
-    @Autowired
-    SportRoutineService sportRoutineService;
-
-    @Autowired
-    NotificationService notificationService;
-
-    @Autowired
-    PasswordEncoder passwordEncoder;
-
-    @Autowired
-    SecurityUtils securityUtils;
+    private final UserRepository userRepository;
+    private final NotificationService notificationService;
+    private final PasswordEncoder passwordEncoder;
+    private final SecurityUtils securityUtils;
     
     @Transactional
     public User create(CreateUserDTO userDTO) {
         if(existsByEmail(userDTO.email())) {
             throw new IllegalArgumentException("Email " + userDTO.email() + " already exists");
         }
+
         GoalBoard board = new GoalBoard();
-        SportRoutine sportRoutine = new SportRoutine();
-        User user = new User(null, userDTO.name(), userDTO.email(), passwordEncoder.encode(userDTO.password()), board, sportRoutine, null, null);
-        sportRoutine.setUser(user);
+        
+        User user = new User(
+            null, 
+            userDTO.name(), 
+            userDTO.email(), 
+            passwordEncoder.encode(userDTO.password()), 
+            board, 
+            null,
+            null,
+            null, 
+            null
+        );
+        
         user = userRepository.save(user);
-        sportRoutineService.initializeWeeklyAvailability(sportRoutine.getId());
-        NotificationDTO notificationDTO = new NotificationDTO("Bem vindo(a)", "Seja muito bem vindo(a), ao SportsLife", user.getId());
+        
+        NotificationDTO notificationDTO = new NotificationDTO(
+            "Bem-vindo(a)!", 
+            "Sua conta foi criada com sucesso.", 
+            user.getId()
+        );
         notificationService.create(notificationDTO);
+        
         return user;
     }
 
@@ -85,6 +92,10 @@ public class UserService {
 
     public Boolean existsById(Long id) {
         return userRepository.existsById(id);
+    }
+
+    public User saveUser(User user) {
+        return userRepository.save(user);
     }
 
 }
