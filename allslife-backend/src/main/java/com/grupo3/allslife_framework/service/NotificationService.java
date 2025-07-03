@@ -8,11 +8,11 @@ import org.springframework.stereotype.Service;
 import com.grupo3.allslife_framework.dto.NotificationDTO;
 import com.grupo3.allslife_framework.exception.RoutineNotFoundException;
 import com.grupo3.allslife_framework.exception.UserNotFoundException;
+import com.grupo3.allslife_framework.model.AbstractRoutine;
 import com.grupo3.allslife_framework.model.Notification;
-import com.grupo3.allslife_framework.model.SportRoutine;
 import com.grupo3.allslife_framework.model.User;
+import com.grupo3.allslife_framework.repository.AbstractRoutineRepository;
 import com.grupo3.allslife_framework.repository.NotificationRepository;
-import com.grupo3.allslife_framework.repository.SportRoutineRepository;
 import com.grupo3.allslife_framework.repository.UserRepository;
 import com.grupo3.allslife_framework.security.SecurityUtils;
 
@@ -30,7 +30,7 @@ public class NotificationService {
     UserRepository userRepository;
 
     @Autowired
-    SportRoutineRepository sportRoutineRepository;
+    AbstractRoutineRepository<AbstractRoutine> abstractRoutineRepository;
 
     @Autowired
     SecurityUtils securityUtils;
@@ -52,16 +52,16 @@ public class NotificationService {
     public void createRoutineNotification(Long userId) {
         User user = userRepository.findById(userId)
             .orElseThrow(() -> new UserNotFoundException("User not found"));
-        SportRoutine sportRoutine = sportRoutineRepository.findByUserId(userId)
-            .orElseThrow(() -> new RoutineNotFoundException("Sport Routine not found for UserId: " + userId));
+        AbstractRoutine routine = abstractRoutineRepository.findByUserId(userId)
+            .orElseThrow(() -> new RoutineNotFoundException("Routine not found for UserId: " + userId));
         List<Notification> existingNotifications = notificationRepository.findByReceiver(user);
-        if (existingNotifications.stream().anyMatch(n -> n.getDescription().equals(sportRoutine.getGeneratedRoutine() != null ? sportRoutine.getGeneratedRoutine() : "Acesse a sua rotina esportiva para começar a praticar!"))) {
+        if (existingNotifications.stream().anyMatch(n -> n.getDescription().equals(routine.getGeneratedRoutine() != null ? routine.getGeneratedRoutine() : "Acesse a sua rotina para começar a praticar!"))) {
             return;
         }
         Notification notification = new Notification(
             null, 
-            "Lembre-se de seguir a sua rotina esportiva, Sr(a) " + user.getName() + "!", 
-            sportRoutine.getGeneratedRoutine() != null ? sportRoutine.getGeneratedRoutine() : "Acesse a sua rotina esportiva para começar a praticar!", 
+            "Lembre-se de seguir a sua rotina, Sr(a) " + user.getName() + "!", 
+            routine.getGeneratedRoutine() != null ? routine.getGeneratedRoutine() : "Acesse a sua rotina para começar a praticar!", 
             user
         );
         notificationRepository.save(notification);
