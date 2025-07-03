@@ -49,6 +49,7 @@ public class User {
     private AbstractRoutine routine;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JsonManagedReference
     private AbstractUserPreferences preferences;
 
     @OneToMany(cascade = CascadeType.ALL)

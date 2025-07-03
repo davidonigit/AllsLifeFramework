@@ -17,6 +17,15 @@ export default function Home() {
         {isAuthenticated ? (
           <>
             <div className="flex flex-col w-full items-center">
+              <h2>Configure suas preferências</h2>
+              <button
+                onClick={() => router.push("/user-preferences")}
+                className="secondary-button max-w-[200px]"
+              >
+                Preferências do Usuário
+              </button>
+            </div>
+            <div className="flex flex-col w-full items-center">
               <h2>Acesse sua rotina esportiva</h2>
               <button
                 onClick={() => router.push("/sport-routine")}

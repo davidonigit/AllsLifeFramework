@@ -4,5 +4,4 @@ public enum SportExperienceLevel {
     BEGINNER,
     INTERMEDIATE,
     ADVANCED,
-    EXPERT
 }
