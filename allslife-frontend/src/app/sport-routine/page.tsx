@@ -102,10 +102,8 @@ export default function SportRoutinePage() {
         }
 
         const data: SportRoutine = await response.json();
-        console.log("Dados recebidos:", data);
         setSelectedSport(data.sportName);
         setGeneratedRoutine(data.generatedRoutine);
-        console.log("Rotina gerada:", data.generatedRoutine);
         const sortedAvailability = data.weeklyAvailability.sort((a, b) => {
           const indexA = sortedWeeklyAvailability.indexOf(a.dayOfWeek);
           const indexB = sortedWeeklyAvailability.indexOf(b.dayOfWeek);
@@ -132,10 +130,6 @@ export default function SportRoutinePage() {
   }
 
   async function saveSchedule() {
-    console.log("Salvando rotina com os dados:", {
-      sport: selectedSport,
-      weeklyAvailability,
-    });
     if (selectedSport === "" || selectedSport === null) {
       toast.error("Por favor, selecione um esporte.");
       return;
@@ -225,7 +219,6 @@ export default function SportRoutinePage() {
         setIsLoadingRoutine(false);
         return;
       }
-      console.log("Enviando feedback:", feedback);
       const response = await fetch(
         "http://localhost:8080/api/sport-routine/feedback",
         {

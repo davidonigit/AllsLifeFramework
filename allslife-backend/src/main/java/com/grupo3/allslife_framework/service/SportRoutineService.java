@@ -39,8 +39,6 @@ public class SportRoutineService extends AbstractRoutineService<SportRoutine, Sp
 
     @Override
     protected void validateRoutineForGeneration(SportRoutine routine) {
-        System.out.println("ROTINA: " + routine);
-        System.out.println("DISPONIBILIDADE: " + getWeekAvailabilityString(routine));
 
         if (routine.getSportName() == null || routine.getSportName().isEmpty()) {
             throw new IllegalArgumentException("Esporte não definido para a rotina.");
@@ -79,6 +77,12 @@ public class SportRoutineService extends AbstractRoutineService<SportRoutine, Sp
         
         if (feedback != null && feedback.length > 0 && !feedback[0].isEmpty()) {
             basePrompt += " Leve em consideração o feedback do usuário: " + feedback[0];
+        }
+
+        if (userService.getById(securityUtils.getCurrentUserId()).getPreferences() instanceof SportUserPreferences preferences) {
+            basePrompt += " Considere as preferências do usuário: idade " + preferences.getAge() +
+                          ", nível de experiência " + preferences.getExperienceLevel() + "."+
+                          "Inclua essas informações de forma sucinta no inicio da rotina juntamente com as informações importantes.";
         }
         
         return basePrompt;
