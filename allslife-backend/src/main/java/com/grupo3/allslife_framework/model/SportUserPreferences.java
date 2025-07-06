@@ -1,6 +1,7 @@
 package com.grupo3.allslife_framework.model;
 
 import com.grupo3.allslife_framework.enums.SportExperienceLevel;
+import com.grupo3.allslife_framework.framework.model.AbstractUserPreferences;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;

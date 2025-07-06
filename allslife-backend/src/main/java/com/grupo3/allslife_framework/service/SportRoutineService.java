@@ -1,17 +1,21 @@
 package com.grupo3.allslife_framework.service;
 
-import com.grupo3.allslife_framework.dto.NotificationDTO;
 import com.grupo3.allslife_framework.dto.SportRoutineDTO;
 import com.grupo3.allslife_framework.dto.SportUserPreferencesDTO;
-import com.grupo3.allslife_framework.exception.RoutineNotFoundException;
-import com.grupo3.allslife_framework.model.RoutineHistory;
+import com.grupo3.allslife_framework.framework.dto.NotificationDTO;
+import com.grupo3.allslife_framework.framework.exception.RoutineNotFoundException;
+import com.grupo3.allslife_framework.framework.model.RoutineHistory;
+import com.grupo3.allslife_framework.framework.model.User;
+import com.grupo3.allslife_framework.framework.repository.DailyAvailabilityRepository;
+import com.grupo3.allslife_framework.framework.repository.RoutineHistoryRepository;
+import com.grupo3.allslife_framework.framework.security.SecurityUtils;
+import com.grupo3.allslife_framework.framework.service.AbstractRoutineService;
+import com.grupo3.allslife_framework.framework.service.FachadaLLM;
+import com.grupo3.allslife_framework.framework.service.NotificationService;
+import com.grupo3.allslife_framework.framework.service.UserService;
 import com.grupo3.allslife_framework.model.SportRoutine;
 import com.grupo3.allslife_framework.model.SportUserPreferences;
-import com.grupo3.allslife_framework.model.User;
-import com.grupo3.allslife_framework.repository.DailyAvailabilityRepository;
-import com.grupo3.allslife_framework.repository.RoutineHistoryRepository;
 import com.grupo3.allslife_framework.repository.SportRoutineRepository;
-import com.grupo3.allslife_framework.security.SecurityUtils;
 
 import java.util.List;
 

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.grupo3.allslife_framework.dto.SportRoutineDTO;
-import com.grupo3.allslife_framework.model.RoutineHistory;
+import com.grupo3.allslife_framework.framework.model.RoutineHistory;
 import com.grupo3.allslife_framework.model.SportRoutine;
 import com.grupo3.allslife_framework.service.SportRoutineService;
 

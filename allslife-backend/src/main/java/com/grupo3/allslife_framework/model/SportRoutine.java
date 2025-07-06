@@ -1,5 +1,7 @@
 package com.grupo3.allslife_framework.model;
 
+import com.grupo3.allslife_framework.framework.model.AbstractRoutine;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
