@@ -31,4 +31,37 @@ public class Goal {
     @JsonBackReference
     private GoalBoard goalBoard;
 
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public StatusEnum getStatus() {
+		return status;
+	}
+
+	public void setStatus(StatusEnum status) {
+		this.status = status;
+	}
+
+	public GoalBoard getGoalBoard() {
+		return goalBoard;
+	}
+
+	public void setGoalBoard(GoalBoard goalBoard) {
+		this.goalBoard = goalBoard;
+	}
+
+    
 }

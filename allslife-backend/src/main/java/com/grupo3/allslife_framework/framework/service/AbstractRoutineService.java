@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.grupo3.allslife_framework.framework.enums.DayOfWeekEnum;
 import com.grupo3.allslife_framework.framework.exception.RoutineNotFoundException;
 import com.grupo3.allslife_framework.framework.exception.UserNotFoundException;
@@ -26,12 +28,18 @@ public abstract class AbstractRoutineService<
     R extends AbstractRoutineRepository<T>
 > {
 
-    protected final R routineRepository;
-    protected final DailyAvailabilityRepository dailyAvailabilityRepository;
-    protected final SecurityUtils securityUtils;
-    protected final FachadaLLM fachadaLLM;
-    protected final NotificationService notificationService;
-    protected final UserService userService;
+	@Autowired
+    protected R routineRepository;
+	@Autowired
+    protected DailyAvailabilityRepository dailyAvailabilityRepository;
+	@Autowired
+    protected SecurityUtils securityUtils;
+	@Autowired
+    protected FachadaLLM fachadaLLM;
+	@Autowired
+    protected NotificationService notificationService;
+	@Autowired
+    protected UserService userService;
 
     // MÉTODOS GENÉRICOS
 
@@ -128,4 +136,64 @@ public abstract class AbstractRoutineService<
      * Envia uma notificação de sucesso com uma mensagem customizada.
      */
     protected abstract void sendSuccessNotification(T routine);
+
+	public R getRoutineRepository() {
+		return routineRepository;
+	}
+
+	public void setRoutineRepository(R routineRepository) {
+		this.routineRepository = routineRepository;
+	}
+
+	public DailyAvailabilityRepository getDailyAvailabilityRepository() {
+		return dailyAvailabilityRepository;
+	}
+
+	public void setDailyAvailabilityRepository(DailyAvailabilityRepository dailyAvailabilityRepository) {
+		this.dailyAvailabilityRepository = dailyAvailabilityRepository;
+	}
+
+	public SecurityUtils getSecurityUtils() {
+		return securityUtils;
+	}
+
+	public void setSecurityUtils(SecurityUtils securityUtils) {
+		this.securityUtils = securityUtils;
+	}
+
+	public FachadaLLM getFachadaLLM() {
+		return fachadaLLM;
+	}
+
+	public void setFachadaLLM(FachadaLLM fachadaLLM) {
+		this.fachadaLLM = fachadaLLM;
+	}
+
+	public NotificationService getNotificationService() {
+		return notificationService;
+	}
+
+	public void setNotificationService(NotificationService notificationService) {
+		this.notificationService = notificationService;
+	}
+
+	public UserService getUserService() {
+		return userService;
+	}
+
+	public void setUserService(UserService userService) {
+		this.userService = userService;
+	}
+
+	public AbstractRoutineService(R routineRepository, DailyAvailabilityRepository dailyAvailabilityRepository,
+			SecurityUtils securityUtils, FachadaLLM fachadaLLM, NotificationService notificationService,
+			UserService userService) {
+		super();
+		this.routineRepository = routineRepository;
+		this.dailyAvailabilityRepository = dailyAvailabilityRepository;
+		this.securityUtils = securityUtils;
+		this.fachadaLLM = fachadaLLM;
+		this.notificationService = notificationService;
+		this.userService = userService;
+	}
 }

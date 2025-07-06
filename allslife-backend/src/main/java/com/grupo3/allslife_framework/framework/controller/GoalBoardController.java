@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,7 +28,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 @AllArgsConstructor
 public class GoalBoardController {
 
-    private final GoalBoardService goalBoardService;
+	@Autowired
+    private GoalBoardService goalBoardService;
 
     @GetMapping
     public ResponseEntity<GoalBoard> getGoalBoard(){

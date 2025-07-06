@@ -32,5 +32,48 @@ public class Notification {
     @JoinColumn(name = "receiver_id", nullable = false)
     @JsonManagedReference
     private User receiver;
+    
+    
 
+	public Notification(Long id, String title, String description, User receiver) {
+		super();
+		this.id = id;
+		this.title = title;
+		this.description = description;
+		this.receiver = receiver;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public User getReceiver() {
+		return receiver;
+	}
+
+	public void setReceiver(User receiver) {
+		this.receiver = receiver;
+	}
+
+    
 }

@@ -3,6 +3,7 @@ package com.grupo3.allslife_framework.controller;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,7 +24,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 @AllArgsConstructor
 public class SportRoutineController {
     
-    private final SportRoutineService sportRoutineService;
+	@Autowired
+    private SportRoutineService sportRoutineService;
     
     @GetMapping
     public ResponseEntity<SportRoutine> getMyRoutine() {

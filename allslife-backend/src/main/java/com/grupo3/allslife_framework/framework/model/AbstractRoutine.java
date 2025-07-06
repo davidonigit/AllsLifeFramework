@@ -57,4 +57,38 @@ public abstract class AbstractRoutine {
             availability.setEveningAvailable(evening);
         }
     }
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getGeneratedRoutine() {
+		return generatedRoutine;
+	}
+
+	public void setGeneratedRoutine(String generatedRoutine) {
+		this.generatedRoutine = generatedRoutine;
+	}
+
+	public List<DailyAvailability> getWeeklyAvailability() {
+		return weeklyAvailability;
+	}
+
+	public void setWeeklyAvailability(List<DailyAvailability> weeklyAvailability) {
+		this.weeklyAvailability = weeklyAvailability;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+    
+    
 }

@@ -3,6 +3,7 @@ package com.grupo3.allslife_framework.framework.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.grupo3.allslife_framework.framework.dto.GoalDTO;
@@ -21,9 +22,12 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class GoalBoardService {
     
-    private final GoalBoardRepository goalBoardRepository;
-    private final GoalRepository goalRepository;
-    private final SecurityUtils securityUtils;
+	@Autowired
+    private GoalBoardRepository goalBoardRepository;
+	@Autowired
+    private GoalRepository goalRepository;
+	@Autowired
+    private SecurityUtils securityUtils;
 
     public List<GoalBoard> getAllGoalBoards(){
         return goalBoardRepository.findAll();

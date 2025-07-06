@@ -2,6 +2,7 @@ package com.grupo3.allslife_framework.framework.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -22,10 +23,14 @@ import lombok.AllArgsConstructor;
 public class UserService {
 // Removida a injeção do SportRoutineService
 
-    private final UserRepository userRepository;
-    private final NotificationService notificationService;
-    private final PasswordEncoder passwordEncoder;
-    private final SecurityUtils securityUtils;
+	@Autowired
+    private UserRepository userRepository;
+	@Autowired
+    private NotificationService notificationService;
+	@Autowired
+    private PasswordEncoder passwordEncoder;
+	@Autowired
+    private SecurityUtils securityUtils;
     
     @Transactional
     public User create(CreateUserDTO userDTO) {

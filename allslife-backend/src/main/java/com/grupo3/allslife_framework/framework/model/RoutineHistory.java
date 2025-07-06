@@ -33,4 +33,38 @@ public class RoutineHistory {
     @JoinColumn(name = "user_id", nullable = false)
     @JsonManagedReference
     private User user;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getSportName() {
+		return sportName;
+	}
+
+	public void setSportName(String sportName) {
+		this.sportName = sportName;
+	}
+
+	public String getGeneratedRoutine() {
+		return generatedRoutine;
+	}
+
+	public void setGeneratedRoutine(String generatedRoutine) {
+		this.generatedRoutine = generatedRoutine;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+    
+    
 }

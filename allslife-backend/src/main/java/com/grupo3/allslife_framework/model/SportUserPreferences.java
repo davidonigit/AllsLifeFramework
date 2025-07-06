@@ -26,5 +26,22 @@ public class SportUserPreferences extends AbstractUserPreferences {
     @Column(nullable = true)
     private SportExperienceLevel experienceLevel;
 
+	public int getAge() {
+		return age;
+	}
+
+	public void setAge(int age) {
+		this.age = age;
+	}
+
+	public SportExperienceLevel getExperienceLevel() {
+		return experienceLevel;
+	}
+
+	public void setExperienceLevel(SportExperienceLevel experienceLevel) {
+		this.experienceLevel = experienceLevel;
+	}
+
+    
 }
 

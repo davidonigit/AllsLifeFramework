@@ -40,4 +40,54 @@ public class DailyAvailability {
         this.eveningAvailable = eveningAvailable;
         this.routine = routine;
     }
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public DayOfWeekEnum getDayOfWeek() {
+		return dayOfWeek;
+	}
+
+	public void setDayOfWeek(DayOfWeekEnum dayOfWeek) {
+		this.dayOfWeek = dayOfWeek;
+	}
+
+	public boolean isMorningAvailable() {
+		return morningAvailable;
+	}
+
+	public void setMorningAvailable(boolean morningAvailable) {
+		this.morningAvailable = morningAvailable;
+	}
+
+	public boolean isAfternoonAvailable() {
+		return afternoonAvailable;
+	}
+
+	public void setAfternoonAvailable(boolean afternoonAvailable) {
+		this.afternoonAvailable = afternoonAvailable;
+	}
+
+	public boolean isEveningAvailable() {
+		return eveningAvailable;
+	}
+
+	public void setEveningAvailable(boolean eveningAvailable) {
+		this.eveningAvailable = eveningAvailable;
+	}
+
+	public AbstractRoutine getRoutine() {
+		return routine;
+	}
+
+	public void setRoutine(AbstractRoutine routine) {
+		this.routine = routine;
+	}
+    
+    
 }
