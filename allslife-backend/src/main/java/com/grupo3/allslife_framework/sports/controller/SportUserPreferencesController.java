@@ -1,35 +1,32 @@
 package com.grupo3.allslife_framework.sports.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
+import com.grupo3.allslife_framework.framework.controller.AbstractGenericController;
 import com.grupo3.allslife_framework.sports.dto.SportUserPreferencesDTO;
 import com.grupo3.allslife_framework.sports.model.SportUserPreferences;
 import com.grupo3.allslife_framework.sports.service.SportRoutineService;
 
-import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+@RestController
+@RequestMapping("/api/sport-preferences")
+public class SportUserPreferencesController extends AbstractGenericController<
+    SportUserPreferences,
+    SportUserPreferencesDTO,
+    SportRoutineService
+> {
 
-
-@Controller
-@RequestMapping("/api/user-preferences")
-@AllArgsConstructor
-public class SportUserPreferencesController {
-    
-	@Autowired
-    private SportRoutineService sportRoutineService;
-
-    @GetMapping
-    public ResponseEntity<SportUserPreferences> getMySportUserPreferences() {
-        return ResponseEntity.ok(sportRoutineService.getOrCreateSportPreferences());
+    public SportUserPreferencesController(SportRoutineService service) {
+        super(service);
     }
 
-    @PutMapping
-    public ResponseEntity<SportUserPreferences> updateMySportUserPreferences(@RequestBody SportUserPreferencesDTO body) {
-        return ResponseEntity.ok(sportRoutineService.updateSportUserPreferences(body));
+    @Override
+    public ResponseEntity<SportUserPreferences> getMyData() {
+        return ResponseEntity.ok(service.getOrCreateSportPreferences());
+    }
+
+    @Override
+    public ResponseEntity<SportUserPreferences> updateMyData(@RequestBody SportUserPreferencesDTO body) {
+        return ResponseEntity.ok(service.updateSportUserPreferences(body));
     }
 }

@@ -45,7 +45,7 @@ export default function UserPreferencesPage() {
 
       try {
         const response = await fetch(
-          "http://localhost:8080/api/user-preferences",
+          "http://localhost:8080/api/sport-preferences",
           {
             method: "GET",
             headers: {
@@ -67,6 +67,7 @@ export default function UserPreferencesPage() {
         // Preenche o formulário com os dados recebidos do backend
         setAge(data.age ? data.age.toString() : "");
         setExperienceLevel(data.experienceLevel || "BEGINNER");
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (err: any) {
         console.error("Erro ao buscar preferências:", err);
         setError(err.message || "Ocorreu um erro desconhecido.");
@@ -101,7 +102,7 @@ export default function UserPreferencesPage() {
 
     try {
       const response = await fetch(
-        "http://localhost:8080/api/user-preferences",
+        "http://localhost:8080/api/sport-preferences",
         {
           method: "PUT",
           headers: {
@@ -118,6 +119,7 @@ export default function UserPreferencesPage() {
         const errorData = await response.json();
         throw new Error(errorData.message || "Erro ao salvar preferências.");
       }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       console.error("Erro ao salvar preferências:", err);
       toast.error(err.message || "Erro de conexão ao salvar.");

@@ -3,24 +3,30 @@ package com.grupo3.allslife_framework.sports.controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.grupo3.allslife_framework.framework.controller.AbstractRoutineController;
+import com.grupo3.allslife_framework.framework.controller.AbstractGenericController;
 import com.grupo3.allslife_framework.sports.dto.SportRoutineDTO;
 import com.grupo3.allslife_framework.sports.model.SportRoutine;
 import com.grupo3.allslife_framework.sports.service.SportRoutineService;
 
 @RestController
 @RequestMapping("/api/sport-routine")
-public class SportRoutineController extends AbstractRoutineController<SportRoutine, SportRoutineService> {
+public class SportRoutineController extends AbstractGenericController<
+    SportRoutine,
+    SportRoutineDTO,
+    SportRoutineService
+> {
 
-    private final SportRoutineService sportRoutineService;
-    
-    public SportRoutineController(SportRoutineService sportRoutineService) {
-        super(sportRoutineService);
-        this.sportRoutineService = sportRoutineService;
+    public SportRoutineController(SportRoutineService service) {
+        super(service);
     }
 
-    @PutMapping
-    public ResponseEntity<SportRoutine> updateSportRoutine(@RequestBody SportRoutineDTO dto) {
-        return ResponseEntity.ok(sportRoutineService.updateSportRoutine(dto));
+    @Override
+    public ResponseEntity<SportRoutine> getMyData() {
+        return ResponseEntity.ok(service.findByCurrentUser());
+    }
+
+    @Override
+    public ResponseEntity<SportRoutine> updateMyData(@RequestBody SportRoutineDTO body) {
+        return ResponseEntity.ok(service.updateSportRoutine(body));
     }
 }
