@@ -7,6 +7,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.grupo3.allslife_framework.framework.dto.CreateUserDTO;
+import com.grupo3.allslife_framework.framework.dto.LoginRequestDTO;
+import com.grupo3.allslife_framework.framework.dto.LoginResponseDTO;
 import com.grupo3.allslife_framework.framework.dto.NotificationDTO;
 import com.grupo3.allslife_framework.framework.dto.UserDTO;
 import com.grupo3.allslife_framework.framework.exception.UserNotFoundException;
@@ -14,6 +16,7 @@ import com.grupo3.allslife_framework.framework.model.GoalBoard;
 import com.grupo3.allslife_framework.framework.model.User;
 import com.grupo3.allslife_framework.framework.repository.UserRepository;
 import com.grupo3.allslife_framework.framework.security.SecurityUtils;
+import com.grupo3.allslife_framework.framework.security.TokenService;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -31,6 +34,8 @@ public class UserService {
     private PasswordEncoder passwordEncoder;
 	@Autowired
     private SecurityUtils securityUtils;
+    @Autowired
+    private TokenService tokenService;
     
     @Transactional
     public User create(CreateUserDTO userDTO) {
@@ -99,6 +104,17 @@ public class UserService {
 
     public User saveUser(User user) {
         return userRepository.save(user);
+    }
+
+    public LoginResponseDTO login(LoginRequestDTO loginRequest) {
+        User user = userRepository.findByEmail(loginRequest.email())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        if (passwordEncoder.matches(loginRequest.password(), user.getPassword())) {
+            String token = tokenService.generateToken(user);
+            return new LoginResponseDTO(user.getEmail(), token,
+                    new UserDTO(user.getName(), user.getEmail(), null, user.getId()));
+        }
+        return null;
     }
 
 }

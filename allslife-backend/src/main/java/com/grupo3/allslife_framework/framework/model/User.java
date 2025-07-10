@@ -59,21 +59,6 @@ public class User {
     @OneToMany(cascade = CascadeType.ALL)
     @JsonBackReference
     private List<Notification> notifications;
-    
-	public User(Long id, String name, String email, String password, GoalBoard goalBoard, AbstractRoutine routine,
-			AbstractUserPreferences preferences, List<RoutineHistory> routineHistory,
-			List<Notification> notifications) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.email = email;
-		this.password = password;
-		this.goalBoard = goalBoard;
-		this.routine = routine;
-		this.preferences = preferences;
-		this.routineHistory = routineHistory;
-		this.notifications = notifications;
-	}
 
 	public Long getId() {
 		return id;
