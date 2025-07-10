@@ -15,11 +15,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity(name = "users")
 @Data
+@AllArgsConstructor
 @NoArgsConstructor
 public class User {
     
@@ -58,8 +60,6 @@ public class User {
     @JsonBackReference
     private List<Notification> notifications;
     
-    
-
 	public User(Long id, String name, String email, String password, GoalBoard goalBoard, AbstractRoutine routine,
 			AbstractUserPreferences preferences, List<RoutineHistory> routineHistory,
 			List<Notification> notifications) {
