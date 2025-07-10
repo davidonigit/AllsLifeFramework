@@ -1,4 +1,4 @@
-package com.grupo3.allslife_framework.controller;
+package com.grupo3.allslife_framework.sports.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -6,9 +6,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.grupo3.allslife_framework.dto.SportUserPreferencesDTO;
-import com.grupo3.allslife_framework.model.SportUserPreferences;
-import com.grupo3.allslife_framework.service.SportRoutineService;
+import com.grupo3.allslife_framework.sports.dto.SportUserPreferencesDTO;
+import com.grupo3.allslife_framework.sports.model.SportUserPreferences;
+import com.grupo3.allslife_framework.sports.service.SportRoutineService;
 
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.PutMapping;

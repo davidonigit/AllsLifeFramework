@@ -1,7 +1,5 @@
-package com.grupo3.allslife_framework.service;
+package com.grupo3.allslife_framework.sports.service;
 
-import com.grupo3.allslife_framework.dto.SportRoutineDTO;
-import com.grupo3.allslife_framework.dto.SportUserPreferencesDTO;
 import com.grupo3.allslife_framework.framework.dto.NotificationDTO;
 import com.grupo3.allslife_framework.framework.exception.RoutineNotFoundException;
 import com.grupo3.allslife_framework.framework.model.RoutineHistory;
@@ -13,9 +11,11 @@ import com.grupo3.allslife_framework.framework.service.AbstractRoutineService;
 import com.grupo3.allslife_framework.framework.service.FachadaLLM;
 import com.grupo3.allslife_framework.framework.service.NotificationService;
 import com.grupo3.allslife_framework.framework.service.UserService;
-import com.grupo3.allslife_framework.model.SportRoutine;
-import com.grupo3.allslife_framework.model.SportUserPreferences;
-import com.grupo3.allslife_framework.repository.SportRoutineRepository;
+import com.grupo3.allslife_framework.sports.dto.SportRoutineDTO;
+import com.grupo3.allslife_framework.sports.dto.SportUserPreferencesDTO;
+import com.grupo3.allslife_framework.sports.model.SportRoutine;
+import com.grupo3.allslife_framework.sports.model.SportUserPreferences;
+import com.grupo3.allslife_framework.sports.repository.SportRoutineRepository;
 
 import java.util.List;
 

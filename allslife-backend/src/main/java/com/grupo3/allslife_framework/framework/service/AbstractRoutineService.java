@@ -1,7 +1,5 @@
 package com.grupo3.allslife_framework.framework.service;
 
-import lombok.AllArgsConstructor;
-
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +20,6 @@ import com.grupo3.allslife_framework.framework.security.SecurityUtils;
  * @param <T> O tipo da entidade de rotina.
  * @param <R> O tipo do repositório para a rotina.
  */
-@AllArgsConstructor
 public abstract class AbstractRoutineService<
     T extends AbstractRoutine,
     R extends AbstractRoutineRepository<T>

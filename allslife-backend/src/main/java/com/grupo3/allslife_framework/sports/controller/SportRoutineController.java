@@ -1,4 +1,4 @@
-package com.grupo3.allslife_framework.controller;
+package com.grupo3.allslife_framework.sports.controller;
 
 
 import java.util.List;
@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.grupo3.allslife_framework.dto.SportRoutineDTO;
 import com.grupo3.allslife_framework.framework.model.RoutineHistory;
-import com.grupo3.allslife_framework.model.SportRoutine;
-import com.grupo3.allslife_framework.service.SportRoutineService;
+import com.grupo3.allslife_framework.sports.dto.SportRoutineDTO;
+import com.grupo3.allslife_framework.sports.model.SportRoutine;
+import com.grupo3.allslife_framework.sports.service.SportRoutineService;
 
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.PutMapping;

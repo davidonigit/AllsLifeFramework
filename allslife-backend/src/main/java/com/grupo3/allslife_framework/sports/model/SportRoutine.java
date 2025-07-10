@@ -1,4 +1,4 @@
-package com.grupo3.allslife_framework.model;
+package com.grupo3.allslife_framework.sports.model;
 
 import com.grupo3.allslife_framework.framework.model.AbstractRoutine;
 

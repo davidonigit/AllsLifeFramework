@@ -1,4 +1,4 @@
-package com.grupo3.allslife_framework.dto;
+package com.grupo3.allslife_framework.sports.dto;
 
 import java.util.ArrayList;
 
