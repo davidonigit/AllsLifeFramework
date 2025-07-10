@@ -175,7 +175,8 @@ public class SportRoutineService extends AbstractRoutineService<SportRoutine, Sp
         return preferences;
     }
     
-    public List<RoutineHistory> getSportRoutineHistory() {
+    @Override
+    public List<RoutineHistory> getRoutineHistory() {
         Long userId = securityUtils.getCurrentUserId();
         return RoutineHistoryRepository.findByUserId(userId);
     }

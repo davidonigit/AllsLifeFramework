@@ -1,5 +1,6 @@
 package com.grupo3.allslife_framework.framework.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import com.grupo3.allslife_framework.framework.exception.RoutineNotFoundExceptio
 import com.grupo3.allslife_framework.framework.exception.UserNotFoundException;
 import com.grupo3.allslife_framework.framework.model.AbstractRoutine;
 import com.grupo3.allslife_framework.framework.model.DailyAvailability;
+import com.grupo3.allslife_framework.framework.model.RoutineHistory;
 import com.grupo3.allslife_framework.framework.repository.AbstractRoutineRepository;
 import com.grupo3.allslife_framework.framework.repository.DailyAvailabilityRepository;
 import com.grupo3.allslife_framework.framework.security.SecurityUtils;
@@ -133,6 +135,13 @@ public abstract class AbstractRoutineService<
      * Envia uma notificação de sucesso com uma mensagem customizada.
      */
     protected abstract void sendSuccessNotification(T routine);
+
+    /**
+     * Busca o histórico de gerações da rotina do usuário logado.
+     * Cada rotina concreta deve ter seu repositório de histórico.
+     */
+    public abstract List<RoutineHistory> getRoutineHistory();
+
 
 	public R getRoutineRepository() {
 		return routineRepository;
