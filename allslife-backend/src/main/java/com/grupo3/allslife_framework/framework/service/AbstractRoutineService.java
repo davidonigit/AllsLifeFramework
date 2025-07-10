@@ -14,10 +14,11 @@ import com.grupo3.allslife_framework.framework.model.RoutineHistory;
 import com.grupo3.allslife_framework.framework.repository.AbstractRoutineRepository;
 import com.grupo3.allslife_framework.framework.repository.DailyAvailabilityRepository;
 import com.grupo3.allslife_framework.framework.security.SecurityUtils;
+import com.grupo3.allslife_framework.framework.strategy.RoutineGenerationStrategy;
 
 /**
  * Serviço base abstrato que define o fluxo de operações para qualquer tipo de rotina.
- * Utiliza o padrão Template Method para delegar passos específicos às subclasses.
+ * Agora usando o padrão Strategy para customizar partes variáveis.
  *
  * @param <T> O tipo da entidade de rotina.
  * @param <R> O tipo do repositório para a rotina.
@@ -27,18 +28,45 @@ public abstract class AbstractRoutineService<
     R extends AbstractRoutineRepository<T>
 > {
 
-	@Autowired
+    @Autowired
     protected R routineRepository;
-	@Autowired
+
+    @Autowired
     protected DailyAvailabilityRepository dailyAvailabilityRepository;
-	@Autowired
+
+    @Autowired
     protected SecurityUtils securityUtils;
-	@Autowired
+
+    @Autowired
     protected FachadaLLM fachadaLLM;
-	@Autowired
+
+    @Autowired
     protected NotificationService notificationService;
-	@Autowired
+
+    @Autowired
     protected UserService userService;
+
+    // Injeção da Strategy específica
+    protected final RoutineGenerationStrategy<T> generationStrategy;
+
+    // Construtor
+    public AbstractRoutineService(
+        R routineRepository,
+        DailyAvailabilityRepository dailyAvailabilityRepository,
+        SecurityUtils securityUtils,
+        FachadaLLM fachadaLLM,
+        NotificationService notificationService,
+        UserService userService,
+        RoutineGenerationStrategy<T> generationStrategy
+    ) {
+        this.routineRepository = routineRepository;
+        this.dailyAvailabilityRepository = dailyAvailabilityRepository;
+        this.securityUtils = securityUtils;
+        this.fachadaLLM = fachadaLLM;
+        this.notificationService = notificationService;
+        this.userService = userService;
+        this.generationStrategy = generationStrategy;
+    }
 
     // MÉTODOS GENÉRICOS
 
@@ -86,120 +114,77 @@ public abstract class AbstractRoutineService<
         return availability.toString();
     }
 
-    // --- TEMPLATE METHOD PARA GERAÇÃO DA ROTINA ---
-
+    // --- TEMPLATE METHOD para geração da rotina (usando Strategy)
     public String generateRoutine(Long routineId, String... feedback) {
         T routine = findById(routineId)
             .orElseThrow(() -> new RoutineNotFoundException("Rotina não encontrada com ID: " + routineId));
 
-        // 1. Validar se a rotina pode ser gerada
-        validateRoutineForGeneration(routine);
+        generationStrategy.validateRoutineForGeneration(routine);
+        generationStrategy.saveHistory(routine);
+        String prompt = generationStrategy.buildGenerationPrompt(routine, feedback);
 
-        // 2. Salvar histórico, se aplicável (passo abstrato)
-        saveHistory(routine);
-        
-        // 3. Montar o prompt (passo abstrato)
-        String prompt = buildGenerationPrompt(routine, feedback);
-
-        // 4. Chamar a LLM
         String generatedText = fachadaLLM.chat(prompt);
         routine.setGeneratedRoutine(generatedText);
         routineRepository.save(routine);
 
-        // 5. Enviar notificação (passo abstrato para permitir customização da msg)
-        sendSuccessNotification(routine);
-        
+        generationStrategy.sendSuccessNotification(routine);
+
         return generatedText;
     }
 
-
-    // MÉTODOS ABSTRATOS (A SEREM IMPLEMENTADOS PELAS SUBCLASSES)
-
-    /**
-     * Valida se a rotina tem os dados específicos necessários para a geração.
-     * Ex: SportRoutine precisa ter um sportName.
-     */
-    protected abstract void validateRoutineForGeneration(T routine);
-
-    /**
-     * Constrói o prompt específico para o contexto da rotina.
-     */
-    protected abstract String buildGenerationPrompt(T routine, String... feedback);
-    
-    /**
-     * Salva a rotina atual no histórico específico.
-     */
-    protected abstract void saveHistory(T routine);
-
-    /**
-     * Envia uma notificação de sucesso com uma mensagem customizada.
-     */
-    protected abstract void sendSuccessNotification(T routine);
-
-    /**
-     * Busca o histórico de gerações da rotina do usuário logado.
-     * Cada rotina concreta deve ter seu repositório de histórico.
-     */
+    // Cada tipo concreto ainda precisa dizer como buscar o histórico
     public abstract List<RoutineHistory> getRoutineHistory();
 
+    // GETTERS e SETTERS
+    public R getRoutineRepository() {
+        return routineRepository;
+    }
 
-	public R getRoutineRepository() {
-		return routineRepository;
-	}
+    public void setRoutineRepository(R routineRepository) {
+        this.routineRepository = routineRepository;
+    }
 
-	public void setRoutineRepository(R routineRepository) {
-		this.routineRepository = routineRepository;
-	}
+    public DailyAvailabilityRepository getDailyAvailabilityRepository() {
+        return dailyAvailabilityRepository;
+    }
 
-	public DailyAvailabilityRepository getDailyAvailabilityRepository() {
-		return dailyAvailabilityRepository;
-	}
+    public void setDailyAvailabilityRepository(DailyAvailabilityRepository dailyAvailabilityRepository) {
+        this.dailyAvailabilityRepository = dailyAvailabilityRepository;
+    }
 
-	public void setDailyAvailabilityRepository(DailyAvailabilityRepository dailyAvailabilityRepository) {
-		this.dailyAvailabilityRepository = dailyAvailabilityRepository;
-	}
+    public SecurityUtils getSecurityUtils() {
+        return securityUtils;
+    }
 
-	public SecurityUtils getSecurityUtils() {
-		return securityUtils;
-	}
+    public void setSecurityUtils(SecurityUtils securityUtils) {
+        this.securityUtils = securityUtils;
+    }
 
-	public void setSecurityUtils(SecurityUtils securityUtils) {
-		this.securityUtils = securityUtils;
-	}
+    public FachadaLLM getFachadaLLM() {
+        return fachadaLLM;
+    }
 
-	public FachadaLLM getFachadaLLM() {
-		return fachadaLLM;
-	}
+    public void setFachadaLLM(FachadaLLM fachadaLLM) {
+        this.fachadaLLM = fachadaLLM;
+    }
 
-	public void setFachadaLLM(FachadaLLM fachadaLLM) {
-		this.fachadaLLM = fachadaLLM;
-	}
+    public NotificationService getNotificationService() {
+        return notificationService;
+    }
 
-	public NotificationService getNotificationService() {
-		return notificationService;
-	}
+    public void setNotificationService(NotificationService notificationService) {
+        this.notificationService = notificationService;
+    }
 
-	public void setNotificationService(NotificationService notificationService) {
-		this.notificationService = notificationService;
-	}
+    public UserService getUserService() {
+        return userService;
+    }
 
-	public UserService getUserService() {
-		return userService;
-	}
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
 
-	public void setUserService(UserService userService) {
-		this.userService = userService;
-	}
-
-	public AbstractRoutineService(R routineRepository, DailyAvailabilityRepository dailyAvailabilityRepository,
-			SecurityUtils securityUtils, FachadaLLM fachadaLLM, NotificationService notificationService,
-			UserService userService) {
-		super();
-		this.routineRepository = routineRepository;
-		this.dailyAvailabilityRepository = dailyAvailabilityRepository;
-		this.securityUtils = securityUtils;
-		this.fachadaLLM = fachadaLLM;
-		this.notificationService = notificationService;
-		this.userService = userService;
-	}
+    public RoutineGenerationStrategy<T> getGenerationStrategy() {
+        return generationStrategy;
+    }
 }
