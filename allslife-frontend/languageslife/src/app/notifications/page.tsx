@@ -8,9 +8,13 @@ import ReactMarkdown from "react-markdown";
 
 export default function NotificationsPage() {
   const [notifications, setNotifications] = useState<Notification[]>([]);
-  const [isLoadingNotification, setIsLoadingNotification] = useState<boolean>(true);
-  const [notificationError, setNotificationError] = useState<string | null>(null);
-  const [isExpandedNotifications, setIsExpandedNotifications] = useState<boolean>(false);
+  const [isLoadingNotification, setIsLoadingNotification] =
+    useState<boolean>(true);
+  const [notificationError, setNotificationError] = useState<string | null>(
+    null
+  );
+  const [isExpandedNotifications, setIsExpandedNotifications] =
+    useState<boolean>(false);
 
   const { token, isAuthenticated } = useAuthStore();
 
@@ -26,16 +30,13 @@ export default function NotificationsPage() {
           return;
         }
 
-        const response = await fetch(
-          "http://localhost:8080/api/notification",
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await fetch("http://localhost:8080/api/notification", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
         if (!response.ok) {
           const errorData = await response.json();
@@ -48,7 +49,9 @@ export default function NotificationsPage() {
         setNotifications(data);
       } catch (error: any) {
         console.error("Erro ao buscar dados:", error);
-        setNotificationError(error.message || "Não foi possível carregar a rotina.");
+        setNotificationError(
+          error.message || "Não foi possível carregar a rotina."
+        );
       } finally {
         setIsLoadingNotification(false);
       }
@@ -63,7 +66,7 @@ export default function NotificationsPage() {
         <h1 className="text-2xl font-bold mb-4 mr-[12px]">Notificações</h1>
 
         <button
-          className="mb-4 p-[12px] bg-[green] text-white rounded-[12px] hover:bg-[gray] border-[1px] transition"
+          className="mb-4 p-[12px] bg-[#00a6ff] text-white rounded-[12px] hover:bg-[#006297] border-[1px] transition"
           onClick={() => setIsExpandedNotifications((prev) => !prev)}
         >
           {isExpandedNotifications ? "Ocultar" : "Visualizar"}
@@ -80,11 +83,18 @@ export default function NotificationsPage() {
             ) : notifications ? (
               notifications.map((notification, index) => (
                 <div key={index} className="mb-[16px]">
-                  <h2 className="text-[25px] mb-[12px] text-center">{notification.title}</h2>
+                  <h2 className="text-[25px] mb-[12px] text-center">
+                    {notification.title}
+                  </h2>
                   <p className="text-center">Descrição:</p>
-                  <p className="text-justify p-[16px]"> {notification.title.includes("a sua rotina esportiva") ? (
-                    <ReactMarkdown>{notification.description}</ReactMarkdown>
-                  ) : notification.description}</p>
+                  <p className="text-justify p-[16px]">
+                    {" "}
+                    {notification.title.includes("a sua rotina esportiva") ? (
+                      <ReactMarkdown>{notification.description}</ReactMarkdown>
+                    ) : (
+                      notification.description
+                    )}
+                  </p>
                 </div>
               ))
             ) : (

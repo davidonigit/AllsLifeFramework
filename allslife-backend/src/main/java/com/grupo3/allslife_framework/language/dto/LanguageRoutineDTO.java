@@ -6,6 +6,6 @@ import com.grupo3.allslife_framework.framework.dto.DailyAvailabilityDTO;
 
 
 public record LanguageRoutineDTO(
-    String language,
+    String languageName,
     ArrayList<DailyAvailabilityDTO> weeklyAvailability
 ) {}

@@ -4,29 +4,37 @@ import { useState, useEffect, FormEvent } from "react";
 import { useAuthStore } from "@/stores/auth/auth-store"; // Importando o seu store de autenticação
 import { toast } from "sonner"; // Importando o toast para notificações
 
-type SportExperienceLevel = "BEGINNER" | "INTERMEDIATE" | "ADVANCED";
+type LanguageExperienceLevel = "BEGINNER" | "INTERMEDIATE" | "ADVANCED";
+type LanguageSkill = "SPEAKING" | "WRITING" | "LISTENING" | "READING";
 
-const experienceLevelLabels: Record<SportExperienceLevel, string> = {
+const experienceLevelLabels: Record<LanguageExperienceLevel, string> = {
   BEGINNER: "Iniciante",
   INTERMEDIATE: "Intermediário",
   ADVANCED: "Avançado",
 };
 
-interface SportUserPreferencesDTO {
-  age: number;
-  experienceLevel: SportExperienceLevel;
+const languageSkillLabels: Record<LanguageSkill, string> = {
+  SPEAKING: "Fala",
+  WRITING: "Escrita",
+  LISTENING: "Escuta",
+  READING: "Leitura",
+};
+
+interface LanguageUserPreferencesDTO {
+  languageSkill: LanguageSkill;
+  experienceLevel: LanguageExperienceLevel;
 }
 
-interface SportUserPreferences extends SportUserPreferencesDTO {
+interface LanguageUserPreferences extends LanguageUserPreferencesDTO {
   id: number;
 }
 
 export default function UserPreferencesPage() {
   const { token, isAuthenticated } = useAuthStore(); // Pega o estado de autenticação
 
-  const [age, setAge] = useState<string>("");
+  const [languageSkill, setLanguageSkill] = useState<LanguageSkill>("SPEAKING");
   const [experienceLevel, setExperienceLevel] =
-    useState<SportExperienceLevel>("BEGINNER");
+    useState<LanguageExperienceLevel>("BEGINNER");
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isSaving, setIsSaving] = useState<boolean>(false);
@@ -45,7 +53,7 @@ export default function UserPreferencesPage() {
 
       try {
         const response = await fetch(
-          "http://localhost:8080/api/sport-preferences",
+          "http://localhost:8080/api/language-preferences",
           {
             method: "GET",
             headers: {
@@ -62,12 +70,12 @@ export default function UserPreferencesPage() {
           );
         }
 
-        const data: SportUserPreferences = await response.json();
+        const data: LanguageUserPreferences = await response.json();
 
         // Preenche o formulário com os dados recebidos do backend
-        setAge(data.age ? data.age.toString() : "");
+        setLanguageSkill(data.languageSkill || "SPEAKING");
         setExperienceLevel(data.experienceLevel || "BEGINNER");
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (err: any) {
         console.error("Erro ao buscar preferências:", err);
         setError(err.message || "Ocorreu um erro desconhecido.");
@@ -83,26 +91,20 @@ export default function UserPreferencesPage() {
   async function handleSavePreferences(event: FormEvent) {
     event.preventDefault();
 
-    const ageAsNumber = parseInt(age, 10);
-    if (isNaN(ageAsNumber) || ageAsNumber <= 10) {
-      toast.error("Por favor, insira uma idade válida.");
-      return;
-    }
-
     if (!isAuthenticated || !token) {
       toast.error("Usuário não autenticado. Faça login para salvar.");
       return;
     }
 
     setIsSaving(true);
-    const body: SportUserPreferencesDTO = {
-      age: ageAsNumber,
+    const body: LanguageUserPreferencesDTO = {
+      languageSkill: languageSkill,
       experienceLevel: experienceLevel,
     };
 
     try {
       const response = await fetch(
-        "http://localhost:8080/api/sport-preferences",
+        "http://localhost:8080/api/language-preferences",
         {
           method: "PUT",
           headers: {
@@ -119,7 +121,7 @@ export default function UserPreferencesPage() {
         const errorData = await response.json();
         throw new Error(errorData.message || "Erro ao salvar preferências.");
       }
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       console.error("Erro ao salvar preferências:", err);
       toast.error(err.message || "Erro de conexão ao salvar.");
@@ -128,14 +130,6 @@ export default function UserPreferencesPage() {
     }
   }
 
-  // Função auxiliar para validar a entrada de idade
-  const handleAgeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    if (/^\d*$/.test(value) && value.length <= 3) {
-      setAge(value);
-    }
-  };
-
   return (
     <div className="min-h-screen bg-[var(--gray-bg)] pt-8 p-4 flex flex-col items-center">
       <div className="w-3/4 max-w-lg p-8 space-y-6 bg-[var(--form-white)] rounded-lg shadow-md">
@@ -143,7 +137,7 @@ export default function UserPreferencesPage() {
           Configurar Preferências
         </h1>
         <p className="text-center text-gray-600">
-          Suas preferências nos ajudam a criar rotinas de treino mais eficazes e
+          Suas preferências nos ajudam a criar rotinas de estudo mais eficazes e
           personalizadas para você.
         </p>
 
@@ -156,21 +150,25 @@ export default function UserPreferencesPage() {
             {/* Campo Idade */}
             <div>
               <label
-                htmlFor="age"
+                htmlFor="language-skill"
                 className="block text-xl font-semibold mb-2 text-[var(--text-main)]"
               >
-                Sua Idade
+                Principal Habilidade a Praticar
               </label>
-              <input
-                id="age"
-                type="text"
-                inputMode="numeric"
-                value={age}
-                onChange={handleAgeChange}
+              <select
+                id="language-skill"
+                value={languageSkill}
+                onChange={(e) =>
+                  setLanguageSkill(e.target.value as LanguageSkill)
+                }
                 className="p-2 border border-gray-300 rounded-lg w-full"
-                placeholder="Ex: 25"
-                required
-              />
+              >
+                {Object.entries(languageSkillLabels).map(([key, label]) => (
+                  <option key={key} value={key}>
+                    {label}
+                  </option>
+                ))}
+              </select>
             </div>
 
             {/* Campo Nível de Experiência */}
@@ -185,7 +183,7 @@ export default function UserPreferencesPage() {
                 id="experience"
                 value={experienceLevel}
                 onChange={(e) =>
-                  setExperienceLevel(e.target.value as SportExperienceLevel)
+                  setExperienceLevel(e.target.value as LanguageExperienceLevel)
                 }
                 className="p-2 border border-gray-300 rounded-lg w-full"
               >

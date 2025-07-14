@@ -33,7 +33,7 @@ public class LanguageRoutineStrategy implements RoutineGenerationStrategy<Langua
     }
 
     @Override
-    public String buildGenerationPrompt(LanguageRoutine routine, String... feedback) {
+    public String buildGenerationPrompt(LanguageRoutine routine, String availabilityString, String... feedback) {
         String prompt = "Responda como especialista em aprendizado de idiomas. Idioma: " + routine.getLanguageName() + ". ";
 
         if (feedback != null && feedback.length > 0 && !feedback[0].isEmpty()) {
@@ -44,8 +44,7 @@ public class LanguageRoutineStrategy implements RoutineGenerationStrategy<Langua
         if (user.getPreferences() instanceof LanguageUserPreferences prefs) {
             prompt += "Habilidade em foco: " + prefs.getLanguageSkill() + ", Experiência: " + prefs.getExperienceLevel() + ". ";
         }
-
-        prompt += "Monte a rotina de estudo de idioma em Markdown para os dias disponíveis.";
+        prompt += "Considere os dias disponíveis: " + availabilityString +". Monte a rotina de estudo de idioma em Markdown para os dias disponíveis. Crie uma divisória para cada dia da semana, a fim de facilitar a leitura, indicando qual o dia da semana em português, em seguida as atividades do dia. Use uma linguagem clara e objetiva, evitando jargões técnicos.  A rotina deve ser adaptada ao nível de experiência do usuário e às suas preferências. Não escreva informações além da rotina, evite descrições longas no inicio, crie apenas uma seção de informações importantes no inicio, em seguida, já indique os dias da semana com as atividades. ";
         return prompt;
     }
 

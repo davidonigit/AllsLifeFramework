@@ -20,7 +20,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class LanguageUserPreferences extends AbstractUserPreferences {
 
-    @Column(nullable = true)
+    @Enumerated(EnumType.STRING)
+	@Column(nullable = true)
     private LanguageSkill languageSkill;
 
     @Enumerated(EnumType.STRING)

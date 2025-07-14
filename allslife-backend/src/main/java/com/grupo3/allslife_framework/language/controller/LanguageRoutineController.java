@@ -22,7 +22,7 @@ public class LanguageRoutineController extends AbstractGenericController<
 
     @Override
     public ResponseEntity<LanguageRoutine> getMyData() {
-        return ResponseEntity.ok(service.findByCurrentUser());
+        return ResponseEntity.ok(service.getOrCreateLanguageRoutineForCurrentUser());
     }
 
     @Override

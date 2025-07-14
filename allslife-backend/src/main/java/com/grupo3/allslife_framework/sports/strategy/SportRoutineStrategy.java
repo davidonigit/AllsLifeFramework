@@ -31,7 +31,7 @@ public class SportRoutineStrategy implements RoutineGenerationStrategy<SportRout
     }
 
     @Override
-    public String buildGenerationPrompt(SportRoutine routine, String... feedback) {
+    public String buildGenerationPrompt(SportRoutine routine, String availabilityString, String... feedback) {
         String prompt = "Responda como especialista em esportes. Esporte: " + routine.getSportName() + ". ";
 
         if (feedback != null && feedback.length > 0 && !feedback[0].isEmpty()) {
@@ -43,7 +43,7 @@ public class SportRoutineStrategy implements RoutineGenerationStrategy<SportRout
             prompt += "Idade: " + prefs.getAge() + ", Experiência: " + prefs.getExperienceLevel() + ". ";
         }
 
-        prompt += "Monte a rotina de treino em Markdown para os dias disponíveis.";
+        prompt += "Considere os dias disponíveis: " + availabilityString +"Monte a rotina de estudo de idioma em Markdown para os dias disponíveis. Crie uma divisória para cada dia da semana, a fim de facilitar a leitura. Use uma linguagem clara e objetiva, evitando jargões técnicos.  A rotina deve ser adaptada ao nível de experiência do usuário e às suas preferências. Evite descrições longas no inicio, crie apenas uma seção de informações importantes no inicio, em seguida, já indique os dias da semana com as atividades. ";
         return prompt;
     }
 

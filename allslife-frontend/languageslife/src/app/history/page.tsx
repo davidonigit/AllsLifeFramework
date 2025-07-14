@@ -4,11 +4,11 @@
 import { useState, useEffect } from "react";
 import { useAuthStore } from "@/stores/auth/auth-store";
 import ReactMarkdown from "react-markdown";
-import { SportRoutine } from "../sport-routine/page";
+import { LanguageRoutine } from "../language-routine/page";
 
 export default function HistoryPage() {
   const [generatedRoutine, setGeneratedRoutine] = useState<string>("");
-  const [routineHistory, setRoutineHistory] = useState<SportRoutine[]>([]);
+  const [routineHistory, setRoutineHistory] = useState<LanguageRoutine[]>([]);
   const [isLoadingRoutine, setIsLoadingRoutine] = useState<boolean>(true);
   const [routineError, setRoutineError] = useState<string | null>(null);
   const [isExpandedRoutine, setIsExpandedRoutine] = useState<boolean>(false);
@@ -29,7 +29,7 @@ export default function HistoryPage() {
         }
 
         const response = await fetch(
-          "http://localhost:8080/api/sport-routine",
+          "http://localhost:8080/api/language-routine",
           {
             method: "GET",
             headers: {
@@ -46,7 +46,7 @@ export default function HistoryPage() {
           );
         }
 
-        const data: SportRoutine = await response.json();
+        const data: LanguageRoutine = await response.json();
         setGeneratedRoutine(data.generatedRoutine);
       } catch (error: any) {
         console.error("Erro ao buscar dados:", error);
@@ -68,7 +68,7 @@ export default function HistoryPage() {
         }
 
         const response = await fetch(
-          "http://localhost:8080/api/sport-routine/history",
+          "http://localhost:8080/api/language-routine/history",
           {
             method: "GET",
             headers: {
@@ -85,7 +85,7 @@ export default function HistoryPage() {
           );
         }
 
-        const data: SportRoutine[] = await response.json();
+        const data: LanguageRoutine[] = await response.json();
         setRoutineHistory(data);
       } catch (error: any) {
         console.error("Erro ao buscar dados:", error);
@@ -105,7 +105,7 @@ export default function HistoryPage() {
         <h1 className="text-2xl font-bold mb-4 mr-[12px]">Treino Atual</h1>
 
         <button
-          className="mb-4 p-[12px] bg-[green] text-white rounded-[12px] hover:bg-[gray] border-[1px] transition"
+          className="mb-4 p-[12px] bg-[#00a6ff] text-white rounded-[12px] hover:bg-[#006297] border-[1px] transition"
           onClick={() => setIsExpandedRoutine((prev) => !prev)}
         >
           {isExpandedRoutine ? "Ocultar" : "Visualizar"}
@@ -129,10 +129,12 @@ export default function HistoryPage() {
       )}
 
       <div className="w-full flex flex-row justify-center items-center my-[8px]">
-        <h1 className="text-2xl font-bold mb-4 mr-[12px]">Treinos Anteriores</h1>
+        <h1 className="text-2xl font-bold mb-4 mr-[12px]">
+          Treinos Anteriores
+        </h1>
 
         <button
-          className="mb-4 p-[12px] bg-[green] text-white rounded-[12px] hover:bg-[gray] border-[1px] transition"
+          className="mb-4 p-[12px] bg-[#00a6ff] text-white rounded-[12px] hover:bg-[#006297] border-[1px] transition"
           onClick={() => setIsExpandedHistory((prev) => !prev)}
         >
           {isExpandedHistory ? "Ocultar" : "Visualizar"}
@@ -149,7 +151,9 @@ export default function HistoryPage() {
             ) : routineHistory ? (
               routineHistory.map((routine, index) => (
                 <div key={index} className="mb-4">
-                  <h2 className="text-[25px] mb-[12px] text-center">Treino {index + 1} ({routine.sportName})</h2>
+                  <h2 className="text-[25px] mb-[12px] text-center">
+                    Treino {index + 1} ({routine.languageName})
+                  </h2>
                   <ReactMarkdown>{routine.generatedRoutine}</ReactMarkdown>
                 </div>
               ))

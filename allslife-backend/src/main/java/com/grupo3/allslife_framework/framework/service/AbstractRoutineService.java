@@ -122,7 +122,8 @@ public abstract class AbstractRoutineService<
 
         generationStrategy.validateRoutineForGeneration(routine);
         generationStrategy.saveHistory(routine);
-        String prompt = generationStrategy.buildGenerationPrompt(routine, feedback);
+        String availabilityString = getWeekAvailabilityString(routine);
+        String prompt = generationStrategy.buildGenerationPrompt(routine, availabilityString, feedback);
 
         String generatedText = fachadaLLM.chat(prompt);
         routine.setGeneratedRoutine(generatedText);

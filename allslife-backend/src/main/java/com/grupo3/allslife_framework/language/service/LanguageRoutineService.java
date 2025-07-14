@@ -34,7 +34,7 @@ public class LanguageRoutineService extends AbstractRoutineService<LanguageRouti
         NotificationService notificationService,
         UserService userService,
         RoutineHistoryRepository routineHistoryRepository,
-        RoutineGenerationStrategy<LanguageRoutine> generationStrategy // <- injeta a strategy
+        RoutineGenerationStrategy<LanguageRoutine> generationStrategy
     ) {
         super(routineRepository, dailyAvailabilityRepository, securityUtils, fachadaLLM, notificationService, userService, generationStrategy);
         this.routineHistoryRepository = routineHistoryRepository;
@@ -80,7 +80,7 @@ public class LanguageRoutineService extends AbstractRoutineService<LanguageRouti
             throw new RoutineNotFoundException("Rotina de Idioma não encontrada para o usuário atual.");
         }
 
-        LanguageRoutine.setLanguageName(dto.language());
+        LanguageRoutine.setLanguageName(dto.languageName());
 
         // Atualizar disponibilidade semanal
         dto.weeklyAvailability().forEach(dailyAvailability ->
@@ -102,7 +102,7 @@ public class LanguageRoutineService extends AbstractRoutineService<LanguageRouti
             throw new IllegalArgumentException("Usuário não possui preferências de idioma definidas.");
         }
 
-        preferences.setLanguageSkill(dto.skill());
+        preferences.setLanguageSkill(dto.languageSkill());
         preferences.setExperienceLevel(dto.experienceLevel());
 
         userService.saveUser(currentUser);
