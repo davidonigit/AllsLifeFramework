@@ -24,7 +24,7 @@ public class RoutineHistory {
     private Long id;
     
     @Column(nullable = true)
-    private String sportName;
+    private String routineName;
 
     @Column(nullable = true, columnDefinition = "TEXT")
     private String generatedRoutine;
@@ -42,12 +42,12 @@ public class RoutineHistory {
 		this.id = id;
 	}
 
-	public String getSportName() {
-		return sportName;
+	public String getRoutineName() {
+		return routineName;
 	}
 
-	public void setSportName(String sportName) {
-		this.sportName = sportName;
+	public void setRoutineName(String routineName) {
+		this.routineName = routineName;
 	}
 
 	public String getGeneratedRoutine() {

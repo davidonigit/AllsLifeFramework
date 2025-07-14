@@ -1,4 +1,6 @@
-package com.grupo3.allslife_framework.sports.strategy;
+package com.grupo3.allslife_framework.language.strategy;
+
+import java.util.Locale.LanguageRange;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,11 +10,11 @@ import com.grupo3.allslife_framework.framework.model.RoutineHistory;
 import com.grupo3.allslife_framework.framework.repository.RoutineHistoryRepository;
 import com.grupo3.allslife_framework.framework.service.NotificationService;
 import com.grupo3.allslife_framework.framework.strategy.RoutineGenerationStrategy;
-import com.grupo3.allslife_framework.sports.model.SportRoutine;
-import com.grupo3.allslife_framework.sports.model.SportUserPreferences;
+import com.grupo3.allslife_framework.language.model.LanguageRoutine;
+import com.grupo3.allslife_framework.language.model.LanguageUserPreferences;
 
 @Service
-public class SportRoutineStrategy implements RoutineGenerationStrategy<SportRoutine> {
+public class LanguageRoutineStrategy implements RoutineGenerationStrategy<LanguageRoutine> {
 
     @Autowired
     private RoutineHistoryRepository historyRepository;
@@ -21,9 +23,9 @@ public class SportRoutineStrategy implements RoutineGenerationStrategy<SportRout
     private NotificationService notificationService;
 
     @Override
-    public void validateRoutineForGeneration(SportRoutine routine) {
-        if (routine.getSportName() == null || routine.getSportName().isEmpty()) {
-            throw new IllegalArgumentException("Esporte não definido para a rotina.");
+    public void validateRoutineForGeneration(LanguageRoutine routine) {
+        if (routine.getLanguageName() == null || routine.getLanguageName().isEmpty()) {
+            throw new IllegalArgumentException("Idioma não definido para a rotina.");
         }
         if (routine.getWeeklyAvailability().isEmpty()) {
             throw new IllegalArgumentException("Rotina não possui disponibilidade definida.");
@@ -31,38 +33,38 @@ public class SportRoutineStrategy implements RoutineGenerationStrategy<SportRout
     }
 
     @Override
-    public String buildGenerationPrompt(SportRoutine routine, String... feedback) {
-        String prompt = "Responda como especialista em esportes. Esporte: " + routine.getSportName() + ". ";
+    public String buildGenerationPrompt(LanguageRoutine routine, String... feedback) {
+        String prompt = "Responda como especialista em aprendizado de idiomas. Idioma: " + routine.getLanguageName() + ". ";
 
         if (feedback != null && feedback.length > 0 && !feedback[0].isEmpty()) {
             prompt += "Considere o feedback: " + feedback[0] + ". ";
         }
 
         var user = routine.getUser();
-        if (user.getPreferences() instanceof SportUserPreferences prefs) {
-            prompt += "Idade: " + prefs.getAge() + ", Experiência: " + prefs.getExperienceLevel() + ". ";
+        if (user.getPreferences() instanceof LanguageUserPreferences prefs) {
+            prompt += "Habilidade em foco: " + prefs.getLanguageSkill() + ", Experiência: " + prefs.getExperienceLevel() + ". ";
         }
 
-        prompt += "Monte a rotina de treino em Markdown para os dias disponíveis.";
+        prompt += "Monte a rotina de estudo de idioma em Markdown para os dias disponíveis.";
         return prompt;
     }
 
     @Override
-    public void saveHistory(SportRoutine routine) {
+    public void saveHistory(LanguageRoutine routine) {
         if (routine.getGeneratedRoutine() != null) {
             RoutineHistory history = new RoutineHistory();
             history.setGeneratedRoutine(routine.getGeneratedRoutine());
-            history.setRoutineName(routine.getSportName());
+            history.setRoutineName(routine.getLanguageName());
             history.setUser(routine.getUser());
             historyRepository.save(history);
         }
     }
 
     @Override
-    public void sendSuccessNotification(SportRoutine routine) {
+    public void sendSuccessNotification(LanguageRoutine routine) {
         NotificationDTO dto = new NotificationDTO(
-            "Rotina de esporte gerada!",
-            "Sua rotina para " + routine.getSportName() + " foi gerada!",
+            "Rotina de idioma gerada!",
+            "Sua rotina para " + routine.getLanguageName() + " foi gerada!",
             routine.getUser().getId()
         );
         notificationService.create(dto);

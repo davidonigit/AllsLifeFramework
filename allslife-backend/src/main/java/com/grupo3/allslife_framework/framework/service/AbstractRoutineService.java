@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
 
 import com.grupo3.allslife_framework.framework.enums.DayOfWeekEnum;
 import com.grupo3.allslife_framework.framework.exception.RoutineNotFoundException;
