@@ -9,7 +9,7 @@ export default function Navbar() {
   const { isAuthenticated, logout, user } = useAuthStore();
   const router = useRouter();
   console.log("isAuthenticated:", isAuthenticated);
-  console.log("user", user)
+  console.log("user", user);
 
   const handleLogout = () => {
     logout();
@@ -25,7 +25,6 @@ export default function Navbar() {
     <header
       className="w-full flex justify-between items-center"
       style={{
-        backgroundColor: "#22c55e",
         color: "#ffffff",
         fontWeight: "bold",
         boxShadow: "0 1px 8px rgba(34, 197, 94, 0.12)",
@@ -40,7 +39,7 @@ export default function Navbar() {
         className="cursor-pointer"
         onClick={() => router.push("/")}
       >
-        SportsLife
+        LanguagesLife
       </h1>
       <div>
         {isAuthenticated ? (
@@ -48,7 +47,7 @@ export default function Navbar() {
             onClick={handleLogout}
             style={{
               backgroundColor: "#ffffff",
-              color: "#22c55e",
+              color: "#00a6ff",
               fontWeight: 600,
               padding: "8px 16px",
               borderRadius: "8px",
@@ -57,7 +56,7 @@ export default function Navbar() {
               transition: "background 0.2s",
             }}
             onMouseOver={(e) =>
-              (e.currentTarget.style.backgroundColor = "#f2f2f2")
+              (e.currentTarget.style.backgroundColor = "#006297")
             }
             onMouseOut={(e) =>
               (e.currentTarget.style.backgroundColor = "#ffffff")
@@ -70,7 +69,7 @@ export default function Navbar() {
             onClick={handleLoginRedirect}
             style={{
               backgroundColor: "#ffffff",
-              color: "#22c55e",
+              color: "#00a6ff",
               fontWeight: 600,
               padding: "8px 16px",
               borderRadius: "8px",
@@ -79,7 +78,7 @@ export default function Navbar() {
               transition: "background 0.2s",
             }}
             onMouseOver={(e) =>
-              (e.currentTarget.style.backgroundColor = "#f2f2f2")
+              (e.currentTarget.style.backgroundColor = "#006297")
             }
             onMouseOut={(e) =>
               (e.currentTarget.style.backgroundColor = "#ffffff")

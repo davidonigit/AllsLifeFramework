@@ -6,22 +6,19 @@ import { useAuthStore } from "@/stores/auth/auth-store";
 import { toast } from "sonner";
 import ReactMarkdown from "react-markdown";
 
-// Esportes disponíveis
-export const sportsList = [
+export const languagesList = [
   "",
-  "Futebol",
-  "Basquete",
-  "Corrida",
-  "Natação",
-  "Ciclismo",
-  "Yoga",
-  "Tênis",
-  "Vôlei",
-  "Musculação",
-  "Boxe",
+  "Inglês",
+  "Espanhol",
+  "Francês",
+  "Alemão",
+  "Italiano",
+  "Japonês",
+  "Mandarim",
+  "Russo",
+  "Português para Estrangeiros",
 ];
 
-// Converter strings do enum para nome do dia
 export const dayOfWeekEnum: Record<string, string> = {
   SUNDAY: "Domingo",
   MONDAY: "Segunda-feira",
@@ -42,7 +39,6 @@ export const sortedWeeklyAvailability = [
   "SATURDAY",
 ];
 
-// Tipos para dados de disponibilidade
 export interface DailyAvailability {
   id: number;
   dayOfWeek: string;
@@ -51,32 +47,31 @@ export interface DailyAvailability {
   eveningAvailable: boolean;
 }
 
-export interface SportRoutine {
-  sportName: string;
+export interface LanguageRoutine {
+  languageName: string;
   weeklyAvailability: DailyAvailability[];
   generatedRoutine: string;
 }
 
-export default function SportRoutinePage() {
-  const [selectedSport, setSelectedSport] = useState<string>(sportsList[0]);
+export default function LanguageRoutinePage() {
+  const [selectedLanguage, setSelectedLanguage] = useState<string>(
+    languagesList[0]
+  );
   const [weeklyAvailability, setWeeklyAvailability] = useState<
     DailyAvailability[]
   >([]);
   const [generatedRoutine, setGeneratedRoutine] = useState<string>("");
   const [routineUpdateTrigger, setRoutineUpdateTrigger] = useState(0);
-
   const [isLoadingRoutine, setIsLoadingRoutine] = useState<boolean>(true);
   const [routineError, setRoutineError] = useState<string | null>(null);
-
   const { token, isAuthenticated } = useAuthStore();
 
   useEffect(() => {
     async function fetchData() {
       try {
-        setIsLoadingRoutine(true); // Inicia o carregamento da rotina
-        setRoutineError(null); // Limpa erros anteriores
+        setIsLoadingRoutine(true);
+        setRoutineError(null);
 
-        // Verifica se o token existe antes de fazer a requisição
         if (!isAuthenticated || !token) {
           setRoutineError("Usuário não autenticado ou token ausente.");
           setIsLoadingRoutine(false);
@@ -84,7 +79,7 @@ export default function SportRoutinePage() {
         }
 
         const response = await fetch(
-          "http://localhost:8080/api/sport-routine",
+          "http://localhost:8080/api/language-routine",
           {
             method: "GET",
             headers: {
@@ -101,8 +96,10 @@ export default function SportRoutinePage() {
           );
         }
 
-        const data: SportRoutine = await response.json();
-        setSelectedSport(data.sportName);
+        const data: LanguageRoutine = await response.json();
+        if (data.languageName != null) {
+          setSelectedLanguage(data.languageName);
+        }
         setGeneratedRoutine(data.generatedRoutine);
         const sortedAvailability = data.weeklyAvailability.sort((a, b) => {
           const indexA = sortedWeeklyAvailability.indexOf(a.dayOfWeek);
@@ -112,7 +109,9 @@ export default function SportRoutinePage() {
         setWeeklyAvailability(sortedAvailability);
       } catch (error: any) {
         console.error("Erro ao buscar dados:", error);
-        setRoutineError(error.message || "Não foi possível carregar a rotina.");
+        setRoutineError(
+          error.message || "Não foi possível carregar o plano de estudos."
+        );
       } finally {
         setIsLoadingRoutine(false);
       }
@@ -129,9 +128,9 @@ export default function SportRoutinePage() {
     });
   }
 
-  async function saveSchedule() {
-    if (selectedSport === "" || selectedSport === null) {
-      toast.error("Por favor, selecione um esporte.");
+  async function saveRoutine() {
+    if (selectedLanguage === "" || selectedLanguage === null) {
+      toast.error("Por favor, selecione um idioma.");
       return;
     }
     try {
@@ -139,39 +138,49 @@ export default function SportRoutinePage() {
         toast.error("Usuário não autenticado. Faça login para salvar.");
         return;
       }
-      const response = await fetch("http://localhost:8080/api/sport-routine", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ sport: selectedSport, weeklyAvailability }),
+      console.log("BODY:", {
+        languageName: selectedLanguage,
+        weeklyAvailability,
       });
+      const response = await fetch(
+        "http://localhost:8080/api/language-routine",
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            languageName: selectedLanguage,
+            weeklyAvailability,
+          }),
+        }
+      );
       if (response.ok) {
-        toast.success("Rotina salva com sucesso!");
+        toast.success("Plano de estudos salvo com sucesso!");
       } else {
-        toast.error("Erro ao salvar rotina.");
+        toast.error("Erro ao salvar o plano de estudos.");
       }
     } catch (error: any) {
       toast.error("Erro de conexão.", {
-        description: error,
+        description: error.message,
       });
     }
   }
 
-  async function generateRoutine() {
+  async function generateStudyPlan() {
     try {
       setIsLoadingRoutine(true);
       setRoutineError(null);
 
       if (!isAuthenticated || !token) {
-        toast.error("Usuário não autenticado. Faça login para gerar a rotina.");
+        toast.error("Usuário não autenticado. Faça login para gerar o plano.");
         setIsLoadingRoutine(false);
         return;
       }
 
       const response = await fetch(
-        "http://localhost:8080/api/sport-routine/generate",
+        "http://localhost:8080/api/language-routine/generate",
         {
           method: "GET",
           headers: {
@@ -184,18 +193,20 @@ export default function SportRoutinePage() {
       if (!response.ok) {
         const errorData = await response.text();
         throw new Error(
-          `Erro ao gerar rotina: ${response.status} - ${
+          `Erro ao gerar plano: ${response.status} - ${
             errorData || "Resposta vazia"
           }`
         );
       }
 
-      toast.success("Rotina gerada com sucesso!");
+      toast.success("Plano de estudos gerado com sucesso!");
       setRoutineUpdateTrigger((prev) => prev + 1);
     } catch (error: any) {
-      console.error("Erro ao gerar rotina:", error);
-      setRoutineError(error.message || "Não foi possível gerar a rotina.");
-      toast.error(error.message || "Erro ao gerar a rotina.");
+      console.error("Erro ao gerar plano:", error);
+      setRoutineError(
+        error.message || "Não foi possível gerar o plano de estudos."
+      );
+      toast.error(error.message || "Erro ao gerar o plano de estudos.");
     } finally {
       setIsLoadingRoutine(false);
       (document.querySelector("textarea") as HTMLTextAreaElement).value = "";
@@ -203,7 +214,6 @@ export default function SportRoutinePage() {
   }
 
   async function submitFeedback() {
-    //Pegar o feedback da textarea
     const feedback = (document.querySelector("textarea") as HTMLTextAreaElement)
       .value;
     if (!feedback || feedback.trim() === "") {
@@ -215,12 +225,12 @@ export default function SportRoutinePage() {
       setRoutineError(null);
 
       if (!isAuthenticated || !token) {
-        toast.error("Usuário não autenticado. Faça login para gerar a rotina.");
+        toast.error("Usuário não autenticado. Faça login para gerar o plano.");
         setIsLoadingRoutine(false);
         return;
       }
       const response = await fetch(
-        "http://localhost:8080/api/sport-routine/feedback",
+        "http://localhost:8080/api/language-routine/feedback",
         {
           method: "PUT",
           headers: {
@@ -234,18 +244,20 @@ export default function SportRoutinePage() {
       if (!response.ok) {
         const errorData = await response.text();
         throw new Error(
-          `Erro ao gerar rotina: ${response.status} - ${
+          `Erro ao gerar plano: ${response.status} - ${
             errorData || "Resposta vazia"
           }`
         );
       }
 
-      toast.success("Rotina gerada com sucesso!");
+      toast.success("Novo plano de estudos gerado com seu feedback!");
       setRoutineUpdateTrigger((prev) => prev + 1);
     } catch (error: any) {
-      console.error("Erro ao gerar rotina:", error);
-      setRoutineError(error.message || "Não foi possível gerar a rotina.");
-      toast.error(error.message || "Erro ao gerar a rotina.");
+      console.error("Erro ao gerar plano:", error);
+      setRoutineError(
+        error.message || "Não foi possível gerar o plano de estudos."
+      );
+      toast.error(error.message || "Erro ao gerar o plano de estudos.");
     } finally {
       setIsLoadingRoutine(false);
     }
@@ -254,25 +266,24 @@ export default function SportRoutinePage() {
   return (
     <div className="min-h-screen bg-[var(--gray-bg)] pt-8 p-4 flex flex-col items-center">
       <div className="mb-8">
-        {" "}
         <label className="text-xl font-semibold mb-2 block section-header">
-          Escolha seu esporte:
+          Escolha seu idioma:
         </label>
         <select
-          value={selectedSport}
-          onChange={(e) => setSelectedSport(e.target.value)}
+          value={selectedLanguage}
+          onChange={(e) => setSelectedLanguage(e.target.value)}
           className="p-2 border border-gray-300 rounded-lg w-full"
         >
-          {sportsList.map((sport) => (
-            <option key={sport} value={sport}>
-              {sport}
+          {languagesList.map((language) => (
+            <option key={language} value={language}>
+              {language}
             </option>
           ))}
         </select>
       </div>
 
       <div className="flex flex-col w-4/5 items-center">
-        <h1>Sua Rotina</h1>
+        <h1>Sua Disponibilidade de Estudo</h1>
         <table className="w-full max-w-sm mb-6 table-fixed-layout">
           <thead>
             <tr>
@@ -321,46 +332,38 @@ export default function SportRoutinePage() {
             )}
           </tbody>
         </table>
-
-        <button onClick={saveSchedule} className="secondary-button mb-6">
-          {" "}
-          Salvar Rotina
+        <button onClick={saveRoutine} className="secondary-button mb-6">
+          Salvar Disponibilidade
         </button>
       </div>
 
-      <h1>Treino Personalizada</h1>
-      <div className="w-4/5 max-w-sm p-4 rounded-lg bg-[var(--form-white)]">
+      <h1>Plano de Estudos Personalizado</h1>
+      <div className="w-full max-w-sm p-4 rounded-lg bg-[var(--form-white)]">
         <div className="w-full h-64 p-3 border border-[var(--gray-border)] rounded-md bg-[var(--gray-border)] text-[var(--text-main)] overflow-y-auto overflow-x-auto">
           {isLoadingRoutine ? (
-            <p className="text-center">Carregando rotina...</p>
+            <p className="text-center">Carregando plano de estudos...</p>
           ) : routineError ? (
             <p className="text-center text-red-500">{routineError}</p>
           ) : generatedRoutine ? (
             <ReactMarkdown>{generatedRoutine}</ReactMarkdown>
           ) : (
-            <p className="text-center">
-              Nenhuma rotina gerada ainda. Salve sua disponibilidade para gerar
-              uma.
-            </p>
+            <p className="text-center">Nenhum plano gerado ainda.</p>
           )}
         </div>
-        <button onClick={generateRoutine} className="secondary-button mb-6">
-          {" "}
-          Gerar Treino Personalizado
+        <button onClick={generateStudyPlan} className="secondary-button mb-6">
+          Gerar Plano de Estudos
         </button>
       </div>
-      <h1>Enviar feedback sobre a Rotina de Treino</h1>
-      <div className="w-4/5 max-w-sm p-4 rounded-lg bg-[var(--form-white)]">
+      <h1>Enviar feedback sobre o Plano de Estudos</h1>
+      <div className="w-full max-w-sm p-4 rounded-lg bg-[var(--form-white)]">
         <textarea
           className="w-full max-w-sm p-2 border border-gray-300 rounded-lg mb-4"
           placeholder="Escreva seu feedback aqui..."
           rows={2}
           maxLength={300}
         ></textarea>
-
         <button onClick={submitFeedback} className="secondary-button mb-6">
-          {" "}
-          Enviar Feedback e Criar Nova Rotina
+          Enviar Feedback e Gerar Novo Plano
         </button>
       </div>
     </div>

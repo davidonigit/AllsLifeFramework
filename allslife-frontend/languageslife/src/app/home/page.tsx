@@ -12,35 +12,35 @@ export default function Home() {
       <main className="flex flex-col gap-[16px] row-start-2 items-center">
         <h1>
           {isAuthenticated && `Olá, ${user?.name}!`} Seja bem-vindo ao
-          Sportslife!
+          LanguagesLife!
         </h1>
         {isAuthenticated ? (
           <>
             <div className="flex flex-col w-full items-center">
               <h2>Configure suas preferências</h2>
               <button
-                onClick={() => router.push("/user-preferences")}
+                onClick={() => router.push("/language-preferences")}
                 className="secondary-button max-w-[200px]"
               >
                 Preferências do Usuário
               </button>
             </div>
             <div className="flex flex-col w-full items-center">
-              <h2>Acesse sua rotina esportiva</h2>
+              <h2>Acesse sua rotina de idioma</h2>
               <button
-                onClick={() => router.push("/sport-routine")}
+                onClick={() => router.push("/language-routine")}
                 className="secondary-button max-w-[200px]"
               >
-                Rotina Esportiva
+                Rotina de Idioma
               </button>
             </div>
             <div className="flex flex-col w-full items-center">
-              <h2>Acesse seu histórico de treinos</h2>
+              <h2>Acesse seu histórico de rotinas</h2>
               <button
                 onClick={() => router.push("/history")}
                 className="secondary-button max-w-[200px]"
               >
-                Histórico de Treinos
+                Histórico de Rotinas
               </button>
             </div>
             <div className="flex flex-col w-full items-center">
