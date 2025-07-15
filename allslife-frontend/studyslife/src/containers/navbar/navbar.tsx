@@ -40,7 +40,7 @@ export default function Navbar() {
         className="cursor-pointer"
         onClick={() => router.push("/")}
       >
-        SportsLife
+        StudysLife
       </h1>
       <div>
         {isAuthenticated ? (

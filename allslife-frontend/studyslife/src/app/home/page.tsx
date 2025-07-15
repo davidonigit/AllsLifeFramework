@@ -12,7 +12,7 @@ export default function Home() {
       <main className="flex flex-col gap-[16px] row-start-2 items-center">
         <h1>
           {isAuthenticated && `Olá, ${user?.name}!`} Seja bem-vindo ao
-          Sportslife!
+          Studyslife!
         </h1>
         {isAuthenticated ? (
           <>
@@ -26,12 +26,12 @@ export default function Home() {
               </button>
             </div>
             <div className="flex flex-col w-full items-center">
-              <h2>Acesse sua rotina esportiva</h2>
+              <h2>Acesse sua rotina estudyiva</h2>
               <button
-                onClick={() => router.push("/sport-routine")}
+                onClick={() => router.push("/study-routine")}
                 className="secondary-button max-w-[200px]"
               >
-                Rotina Esportiva
+                Rotina Estudyiva
               </button>
             </div>
             <div className="flex flex-col w-full items-center">

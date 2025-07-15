@@ -6,19 +6,19 @@ import { useAuthStore } from "@/stores/auth/auth-store";
 import { toast } from "sonner";
 import ReactMarkdown from "react-markdown";
 
-// Esportes disponíveis
-export const sportsList = [
+// Estudyes disponíveis
+export const subjectAreasList = [
   "",
-  "Futebol",
-  "Basquete",
-  "Corrida",
-  "Natação",
-  "Ciclismo",
-  "Yoga",
-  "Tênis",
-  "Vôlei",
-  "Musculação",
-  "Boxe",
+  "Matemática",
+  "Português",
+  "História",
+  "Geografia",
+  "Ciências",
+  "Inglês",
+  "Programação",
+  "Design",
+  "Marketing",
+  "Economia",
 ];
 
 // Converter strings do enum para nome do dia
@@ -51,14 +51,14 @@ export interface DailyAvailability {
   eveningAvailable: boolean;
 }
 
-export interface SportRoutine {
-  sportName: string;
+export interface StudyRoutine {
+  subjectArea: string;
   weeklyAvailability: DailyAvailability[];
   generatedRoutine: string;
 }
 
-export default function SportRoutinePage() {
-  const [selectedSport, setSelectedSport] = useState<string>(sportsList[0]);
+export default function StudyRoutinePage() {
+  const [selectedSubjectArea, setSelectedSubjectArea] = useState<string>(subjectAreasList[0]);
   const [weeklyAvailability, setWeeklyAvailability] = useState<
     DailyAvailability[]
   >([]);
@@ -84,7 +84,7 @@ export default function SportRoutinePage() {
         }
 
         const response = await fetch(
-          "http://localhost:8080/api/sport-routine",
+          "http://localhost:8080/api/study-routine",
           {
             method: "GET",
             headers: {
@@ -101,8 +101,8 @@ export default function SportRoutinePage() {
           );
         }
 
-        const data: SportRoutine = await response.json();
-        setSelectedSport(data.sportName);
+        const data: StudyRoutine = await response.json();
+        setSelectedSubjectArea(data.subjectArea);
         setGeneratedRoutine(data.generatedRoutine);
         const sortedAvailability = data.weeklyAvailability.sort((a, b) => {
           const indexA = sortedWeeklyAvailability.indexOf(a.dayOfWeek);
@@ -130,8 +130,8 @@ export default function SportRoutinePage() {
   }
 
   async function saveSchedule() {
-    if (selectedSport === "" || selectedSport === null) {
-      toast.error("Por favor, selecione um esporte.");
+    if (selectedSubjectArea === "" || selectedSubjectArea === null) {
+      toast.error("Por favor, selecione uma área de estudo.");
       return;
     }
     try {
@@ -139,13 +139,13 @@ export default function SportRoutinePage() {
         toast.error("Usuário não autenticado. Faça login para salvar.");
         return;
       }
-      const response = await fetch("http://localhost:8080/api/sport-routine", {
+      const response = await fetch("http://localhost:8080/api/study-routine", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ sport: selectedSport, weeklyAvailability }),
+        body: JSON.stringify({ subjectArea: selectedSubjectArea, weeklyAvailability }),
       });
       if (response.ok) {
         toast.success("Rotina salva com sucesso!");
@@ -171,7 +171,7 @@ export default function SportRoutinePage() {
       }
 
       const response = await fetch(
-        "http://localhost:8080/api/sport-routine/generate",
+        "http://localhost:8080/api/study-routine/generate",
         {
           method: "GET",
           headers: {
@@ -220,7 +220,7 @@ export default function SportRoutinePage() {
         return;
       }
       const response = await fetch(
-        "http://localhost:8080/api/sport-routine/feedback",
+        "http://localhost:8080/api/study-routine/feedback",
         {
           method: "PUT",
           headers: {
@@ -256,18 +256,18 @@ export default function SportRoutinePage() {
       <div className="mb-8">
         {" "}
         <label className="text-xl font-semibold mb-2 block section-header">
-          Escolha seu esporte:
+          Escolha sua área de estudo:
         </label>
         <select
-          value={selectedSport}
-          onChange={(e) => setSelectedSport(e.target.value)}
+          value={selectedSubjectArea}
+          onChange={(e) => setSelectedSubjectArea(e.target.value)}
           className="p-2 border border-gray-300 rounded-lg w-full"
         >
-          {sportsList.map((sport) => (
-            <option key={sport} value={sport}>
-              {sport}
+          {subjectAreasList.map((subjectArea) => (
+            <option key={subjectArea} value={subjectArea}>
+              {subjectArea}
             </option>
-          ))}
+          ))}}
         </select>
       </div>
 

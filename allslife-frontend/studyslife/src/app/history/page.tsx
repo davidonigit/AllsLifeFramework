@@ -4,11 +4,11 @@
 import { useState, useEffect } from "react";
 import { useAuthStore } from "@/stores/auth/auth-store";
 import ReactMarkdown from "react-markdown";
-import { SportRoutine } from "../sport-routine/page";
+import { StudyRoutine } from "../study-routine/page";
 
 export default function HistoryPage() {
   const [generatedRoutine, setGeneratedRoutine] = useState<string>("");
-  const [routineHistory, setRoutineHistory] = useState<SportRoutine[]>([]);
+  const [routineHistory, setRoutineHistory] = useState<StudyRoutine[]>([]);
   const [isLoadingRoutine, setIsLoadingRoutine] = useState<boolean>(true);
   const [routineError, setRoutineError] = useState<string | null>(null);
   const [isExpandedRoutine, setIsExpandedRoutine] = useState<boolean>(false);
@@ -29,7 +29,7 @@ export default function HistoryPage() {
         }
 
         const response = await fetch(
-          "http://localhost:8080/api/sport-routine",
+          "http://localhost:8080/api/study-routine",
           {
             method: "GET",
             headers: {
@@ -46,7 +46,7 @@ export default function HistoryPage() {
           );
         }
 
-        const data: SportRoutine = await response.json();
+        const data: StudyRoutine = await response.json();
         setGeneratedRoutine(data.generatedRoutine);
       } catch (error: any) {
         console.error("Erro ao buscar dados:", error);
@@ -68,7 +68,7 @@ export default function HistoryPage() {
         }
 
         const response = await fetch(
-          "http://localhost:8080/api/sport-routine/history",
+          "http://localhost:8080/api/study-routine/history",
           {
             method: "GET",
             headers: {
@@ -85,7 +85,7 @@ export default function HistoryPage() {
           );
         }
 
-        const data: SportRoutine[] = await response.json();
+        const data: StudyRoutine[] = await response.json();
         setRoutineHistory(data);
       } catch (error: any) {
         console.error("Erro ao buscar dados:", error);
@@ -149,7 +149,7 @@ export default function HistoryPage() {
             ) : routineHistory ? (
               routineHistory.map((routine, index) => (
                 <div key={index} className="mb-4">
-                  <h2 className="text-[25px] mb-[12px] text-center">Treino {index + 1} ({routine.sportName})</h2>
+                  <h2 className="text-[25px] mb-[12px] text-center">Treino {index + 1} ({routine.studyName})</h2>
                   <ReactMarkdown>{routine.generatedRoutine}</ReactMarkdown>
                 </div>
               ))
