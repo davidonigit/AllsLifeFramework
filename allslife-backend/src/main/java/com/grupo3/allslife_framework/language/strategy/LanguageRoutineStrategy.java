@@ -1,7 +1,5 @@
 package com.grupo3.allslife_framework.language.strategy;
 
-import java.util.Locale.LanguageRange;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
