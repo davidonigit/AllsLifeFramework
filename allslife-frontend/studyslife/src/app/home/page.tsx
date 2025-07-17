@@ -26,21 +26,21 @@ export default function Home() {
               </button>
             </div>
             <div className="flex flex-col w-full items-center">
-              <h2>Acesse sua rotina estudyiva</h2>
+              <h2>Acesse sua rotina de estudos</h2>
               <button
                 onClick={() => router.push("/study-routine")}
                 className="secondary-button max-w-[200px]"
               >
-                Rotina Estudyiva
+                Rotina de Estudos
               </button>
             </div>
             <div className="flex flex-col w-full items-center">
-              <h2>Acesse seu histórico de treinos</h2>
+              <h2>Acesse seu histórico de rotinas</h2>
               <button
                 onClick={() => router.push("/history")}
                 className="secondary-button max-w-[200px]"
               >
-                Histórico de Treinos
+                Histórico
               </button>
             </div>
             <div className="flex flex-col w-full items-center">

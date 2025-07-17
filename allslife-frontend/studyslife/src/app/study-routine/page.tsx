@@ -267,7 +267,7 @@ export default function StudyRoutinePage() {
             <option key={subjectArea} value={subjectArea}>
               {subjectArea}
             </option>
-          ))}}
+          ))}
         </select>
       </div>
 
@@ -328,7 +328,7 @@ export default function StudyRoutinePage() {
         </button>
       </div>
 
-      <h1>Treino Personalizada</h1>
+      <h1>Rotina Personalizada</h1>
       <div className="w-4/5 max-w-sm p-4 rounded-lg bg-[var(--form-white)]">
         <div className="w-full h-64 p-3 border border-[var(--gray-border)] rounded-md bg-[var(--gray-border)] text-[var(--text-main)] overflow-y-auto overflow-x-auto">
           {isLoadingRoutine ? (
@@ -346,10 +346,10 @@ export default function StudyRoutinePage() {
         </div>
         <button onClick={generateRoutine} className="secondary-button mb-6">
           {" "}
-          Gerar Treino Personalizado
+          Gerar Rotina Personalizada
         </button>
       </div>
-      <h1>Enviar feedback sobre a Rotina de Treino</h1>
+      <h1>Enviar feedback sobre a Rotina de Estudos</h1>
       <div className="w-4/5 max-w-sm p-4 rounded-lg bg-[var(--form-white)]">
         <textarea
           className="w-full max-w-sm p-2 border border-gray-300 rounded-lg mb-4"

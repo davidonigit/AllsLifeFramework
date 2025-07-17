@@ -22,7 +22,7 @@ public class StudyRoutineController extends AbstractGenericController<
 
     @Override
     public ResponseEntity<StudyRoutine> getMyData() {
-        return ResponseEntity.ok(service.findByCurrentUser());
+        return ResponseEntity.ok(service.getOrCreateStudyRoutineForCurrentUser());
     }
 
     @Override

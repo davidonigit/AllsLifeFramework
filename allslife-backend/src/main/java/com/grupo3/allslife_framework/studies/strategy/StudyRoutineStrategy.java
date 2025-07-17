@@ -43,7 +43,7 @@ public class StudyRoutineStrategy implements RoutineGenerationStrategy<StudyRout
             prompt += "Material preferido: " + prefs.getMaterialPreferred() + ", Tempo máximo por sessão: " + prefs.getMaxTime() + " minutos. ";
         }
 
-        prompt += "Considere os dias disponíveis: " + availabilityString + "Monte a rotina de estudos em Markdown para os dias disponíveis. Crie uma divisória para cada dia da semana, a fim de facilitar a leitura. Use uma linguagem clara e objetiva, evitando jargões técnicos. A rotina deve ser adaptada ao material preferido e tempo máximo do usuário. Evite descrições longas no inicio, crie apenas uma seção de informações importantes no inicio, em seguida, já indique os dias da semana com as atividades. ";
+        prompt += "Considere os dias disponíveis: " + availabilityString + "Monte a rotina de estudos em Markdown para os dias disponíveis. Crie uma divisória para cada dia da semana, não crie divisórias de horários dentro dos turnos, com os dias da semana em português, a fim de facilitar a leitura. Use uma linguagem clara e objetiva, evitando jargões técnicos. A rotina deve ser adaptada ao material preferido e tempo máximo do usuário. Evite descrições longas no inicio, crie apenas uma seção de informações importantes no inicio, em seguida, já indique os dias da semana com as atividades. ";
         return prompt;
     }
 
