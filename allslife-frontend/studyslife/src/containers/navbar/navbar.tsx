@@ -25,7 +25,7 @@ export default function Navbar() {
     <header
       className="w-full flex justify-between items-center"
       style={{
-        backgroundColor: "#22c55e",
+        backgroundColor: "#4a28ea",
         color: "#ffffff",
         fontWeight: "bold",
         boxShadow: "0 1px 8px rgba(34, 197, 94, 0.12)",
@@ -40,7 +40,7 @@ export default function Navbar() {
         className="cursor-pointer"
         onClick={() => router.push("/")}
       >
-        SportsLife
+        StudysLife
       </h1>
       <div>
         {isAuthenticated ? (
@@ -48,7 +48,7 @@ export default function Navbar() {
             onClick={handleLogout}
             style={{
               backgroundColor: "#ffffff",
-              color: "#22c55e",
+              color: "#4a28ea",
               fontWeight: 600,
               padding: "8px 16px",
               borderRadius: "8px",
@@ -70,7 +70,7 @@ export default function Navbar() {
             onClick={handleLoginRedirect}
             style={{
               backgroundColor: "#ffffff",
-              color: "#22c55e",
+              color: "#4a28ea",
               fontWeight: 600,
               padding: "8px 16px",
               borderRadius: "8px",

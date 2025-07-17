@@ -82,7 +82,7 @@ export default function NotificationsPage() {
                 <div key={index} className="mb-[16px]">
                   <h2 className="text-[25px] mb-[12px] text-center">{notification.title}</h2>
                   <p className="text-center">Descrição:</p>
-                  <p className="text-justify p-[16px]"> {notification.title.includes("a sua rotina esportiva") ? (
+                  <p className="text-justify p-[16px]"> {notification.title.includes("a sua rotina estudyiva") ? (
                     <ReactMarkdown>{notification.description}</ReactMarkdown>
                   ) : notification.description}</p>
                 </div>

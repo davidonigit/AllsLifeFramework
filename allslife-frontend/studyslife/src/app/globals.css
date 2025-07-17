@@ -2,8 +2,8 @@
 @import "tailwindcss/utilities";
 
 :root {
-  --primary: #22c55e;
-  --primary-dark: #166534;
+  --primary: #4a28ea;
+  --primary-dark: #210e75;
   --gray-bg: #151a16;
   --gray-border: #373a3e;
   --form-white: #171d1a;
@@ -145,7 +145,7 @@ button[type="submit"]:hover,
 }
 
 .secondary-button:hover {
-  background: #e7ffe6;
+  background: #8469fd72;
   border-color: var(--primary-dark);
   color: var(--primary-dark) !important;
 }
